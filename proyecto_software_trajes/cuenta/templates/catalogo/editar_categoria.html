@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_filters %}
+
+{% block content %}
+<head>
+    <!-- Carga tu archivo CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/FormularioCatalogo.css' %}">
+</head>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-purple">Editar Categoría</h1>
+        <a href="{% url 'administracionCatalogo' %}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Volver al catálogo
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-center text-purple mb-4">Editar Categoría: {{ categoria.nombre }}</h5>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
+                            {{ form.nombre.errors }}
+                            {{ form.nombre|add_class:"form-control" }}
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+                            {{ form.descripcion.errors }}
+                            {{ form.descripcion|add_class:"form-control" }}
+                        </div>
+
+                        <!-- Imagen -->
+                        <div class="mb-3">
+                            <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen</label>
+                            {{ form.imagen.errors }}
+                            {{ form.imagen|add_class:"form-control" }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100" style="background-color: #7e3ff2; border-color: #7e3ff2;">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    .text-purple {
+        color: #7e3ff2;
+    }
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        border: none;
+    }
+    .card-body {
+        background-color: #f9f9f9;
+    }
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .btn-primary {
+        background-color: #7e3ff2;
+        border-color: #7e3ff2;
+    }
+    .btn-primary:hover {
+        background-color: #6a2db2;
+        border-color: #6a2db2;
+    }
+</style>
+
+{% endblock %}

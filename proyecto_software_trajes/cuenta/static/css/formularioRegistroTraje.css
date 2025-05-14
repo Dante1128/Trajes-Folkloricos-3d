@@ -1,0 +1,80 @@
+
+.form-traje {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    margin-top: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input[type="file"] {
+    padding: 6px;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #7e3ff2;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #7e3ff2;
+    border-color: #7e3ff2;
+    padding: 12px 25px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    font-size: 18px;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #5a1ec0;
+    border-color: #5a1ec0;
+}
+
+.text-purple {
+    color: #7e3ff2;
+}
+
+h1.text-purple {
+    color: #7e3ff2;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .form-traje {
+        padding: 20px;
+    }
+
+    h1.text-purple {
+        font-size: 28px;
+    }
+}

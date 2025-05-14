@@ -1,0 +1,66 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 40px;
+    text-align: center;
+}
+
+.saludo {
+    font-size: 2em;
+    margin: 20px 0;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.icon-card {
+    background-color: #f22e2e;
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.icon-card:hover {
+    background-color: #d92626;
+}
+
+.icon-card img {
+    width: 64px;
+    height: 64px;
+    filter: invert(100%);
+}
+
+.icon-card p {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.logo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 60px;
+}
+
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}

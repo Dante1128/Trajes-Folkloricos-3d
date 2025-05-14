@@ -1,0 +1,42 @@
+/* Estilos generales */
+.text-purple {
+    color: #7e3ff2;
+}
+.text-orange {
+    color: #ff6b35;
+}
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+}
+.card-img-top {
+    height: 150px;
+    object-fit: cover;
+}
+
+/* Disposición de las categorías en una fila */
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 categorías por fila */
+    gap: 15px; /* Espacio entre las tarjetas */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 1200px) {
+    .row {
+        grid-template-columns: repeat(3, 1fr); /* 3 categorías por fila en pantallas medianas */
+    }
+}
+
+@media (max-width: 992px) {
+    .row {
+        grid-template-columns: repeat(2, 1fr); /* 2 categorías por fila en pantallas pequeñas */
+    }
+}
+
+@media (max-width: 576px) {
+    .row {
+        grid-template-columns: 1fr; /* 1 categoría por fila en pantallas extra pequeñas */
+    }
+}

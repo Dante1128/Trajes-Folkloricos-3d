@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'clientes' %}"> <- Volver a la lista</a>
+<h2>Información del Cliente</h2>
+<ul>
+    <li><strong>Nombre:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</li>
+    <li><strong>Contacto:</strong> {{ cliente.celular }}</li>
+    <li><strong>Correo:</strong> {{ cliente.correo }}</li>
+    <li><strong>Dirección:</strong> {{ cliente.direccion }}</li>
+    <li><strong>Estado:</strong> {{ cliente.estado }}</li>
+    
+</ul>
+
+
+<a href="{% url 'editar_cliente' cliente.id %}" style="color: blue;">Editar</a>
+<a href="{% url 'eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');" style="color: red;">Eliminar</a>
+{% endblock %}
