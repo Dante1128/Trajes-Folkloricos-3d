@@ -138,6 +138,11 @@ def registrar_traje(request):
 def editar_traje(request):
     return render(request, '')
 
+def  eliminar_traje(request,id):
+    trajes = get_object_or_404(Traje, id=id)
+    trajes.delete()
+    return redirect('administracionCatalogo')
+
 
 def cerrar_sesion(request):
     logout(request)
