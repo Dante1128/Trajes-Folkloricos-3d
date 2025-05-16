@@ -43,6 +43,9 @@ python manage.py runserver
 ```bash
 python manage.py migrate
 ```
-
+> 💡 Crear super usuario para logearse:
+```bash
+python manage.py createsuperuser
+```
 
 
