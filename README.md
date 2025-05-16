@@ -8,7 +8,7 @@ Este proyecto tiene como objetivo visualizar o manipular trajes folclóricos en 
 
 ```bash
 # Crear entorno virtual
-python -m venv env
+python -m venv venv
 
 # Activar entorno virtual
 # En Windows:
