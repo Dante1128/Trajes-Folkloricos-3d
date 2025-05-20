@@ -1,5 +1,5 @@
 from django import forms
-from .models import Traje, Usuario
+from .models import Alquiler, Garantia, PagoAlquiler, Traje, Usuario
 from .models import Categoria
 
 class ClienteForm(forms.ModelForm):
@@ -53,3 +53,52 @@ class TrajeForm(forms.ModelForm):
             'material',
             'stock_disponible',
         ]
+
+
+class AlquilerForm(forms.ModelForm):
+    class Meta:
+        model = Alquiler
+        fields = [
+            'usuario',
+            'traje',
+            'evento',
+            'fecha_reserva',
+            'fecha_inicio',
+            'fecha_final',
+            'monto_total',
+            'metodo_pago',
+            'estado',
+        ]
+        widgets = {
+            'fecha_reserva': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_final': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+class PagoAlquilerForm(forms.ModelForm):
+    class Meta:
+        model = PagoAlquiler
+        fields = [
+            'alquiler',
+            'monto',
+            'fecha_pago',
+            'metodo_pago',
+            'estado',
+            'referencia',
+        ]
+        widgets = {
+            'fecha_pago': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+class GarantiaForm(forms.ModelForm):
+    class Meta:
+        model = Garantia
+        fields = [
+            'alquiler',
+            'usuario',
+            'estado',
+            'descripcion',
+        ]
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 3}),
+        }
