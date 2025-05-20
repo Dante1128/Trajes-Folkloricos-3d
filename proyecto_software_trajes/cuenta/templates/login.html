@@ -9,6 +9,10 @@
     <style>
         body {
             background-color: #f2f2f2;
+            margin: 0%;
+            padding: 0%;
+            width: 100%;
+
         }
         .login-container {
             display: flex;
@@ -19,18 +23,34 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 50px;
-            background-color: white;
+            padding: 40px 20px 60px 140px;
+            background-color: #f1f1f1;
+            font-family: "Ubuntu Condensed", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 22px;
+        }
+        .logotip
+        {
+            height: 240px;
+            padding-bottom: 10px;
+            padding-left: 150px;
         }
         .form-wrapper {
-            max-width: 400px;
+            
+            max-width: 500px;
             width: 100%;
         }
         .image-section {
+            
             flex: 1;
-            background: url("{% static 'img/diablada.jpg' %}") no-repeat center center;
-            background-size: cover;
-            clip-path: ellipse(70% 100% at 100% 50%);
+            background-color: #f2f2f2;
+        }
+        .imagee
+        {
+            margin-left: 135px;
+            width: 500px;
+            height: 641px;
         }
         .btn-outline-dark {
             display: flex;
@@ -44,6 +64,7 @@
 <div class="login-container">
     <div class="form-section">
         <div class="form-wrapper">
+            <img src="/media/media/logofolklorear.png" alt="" class="logotip">
             <h2 class="mb-4 text-center">Iniciar Sesión</h2>
             <form method="post">
                 {% csrf_token %}
@@ -62,7 +83,9 @@
             </form>
         </div>
     </div>
-    <div class="image-section"></div>
+    <div class="image-section">
+        <img src="/media/media/iniciasesion.png" alt="imagendiablada" class="imagee">
+    </div>
 </div>
 </body>
 </html>
