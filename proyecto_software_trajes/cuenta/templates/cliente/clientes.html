@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'css/clientes.css' %}">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2>Clientes</h2>
-    <a href="{% url 'crear_cliente' %}" class="btn" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
+    <a href="{% url 'crear_cliente' %}" class="btn">
         + Agregar Cliente
     </a>
 </div>
@@ -17,13 +20,13 @@
 </form>
 
 <h3>Lista de Clientes</h3>
-<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: separate; border-spacing: 0;">
     <tbody>
         {% for cliente in clientes %}
         <tr>
             <td>{{ cliente.nombre }}</td>
             <td>
-                <a href="{% url 'informacion_cliente' cliente.id %}" style="color: black;">Ver</a>
+                <a href="{% url 'informacion_cliente' cliente.id %}">Ver</a>
             </td>
         </tr>
         {% empty %}

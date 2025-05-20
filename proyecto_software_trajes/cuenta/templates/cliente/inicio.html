@@ -3,27 +3,35 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="saludo">Hola, {{ user.username }} 👋</h1>
+    <h1 class="tituloo">ADMINISTRACIÓN DEL SISTEMA</h1>
+    <h1 class="saludo">Bienvenido/a, {{ user.username }} 👋 aqui podras gestionar el sistema.</h1>
+    <div class="Cuadrocolor">
+        <div class="icon-grid">
+            <div class="caja1">
+                <a href="{% url 'clientes' %}" class="icon-card">
+                    <img src="/media/media/iconocliente.png" alt="Clientes" >
+                    <p>Clientes</p>
+                </a>
+                <a href="{% url 'reserva'%}" class="icon-card">
+                    <img src="/media/media/iconoreserva.png" alt="Reservas">
+                    <p>Reservas</p>
+                </a>
+            </div>
+            <div class="caja1">
+                <a href="{% url 'inventario'%}" class="icon-card">
+                    <img src="/media/media/iconoinven.png" alt="Inventario">
+                    <p>Inventario</p>
+                </a>
+                <a href="{% url 'catalogoTrajes'%}" class="icon-card">
+                    <img src="/media/media/iconoreportes.png" alt="catalogoTrajes">
+                    <p>Catalogo de Tarajes Folkloricos</p>
+                </a>
+            </div>
+        
+        </div>
 
-    <div class="icon-grid">
-        <a href="{% url 'clientes' %}" class="icon-card">
-            <img src="" alt="Clientes">
-            <p>Clientes</p>
-        </a>
-        <a href="{% url 'reserva'%}" class="icon-card">
-            <img src="" alt="Reservas">
-            <p>Reservas</p>
-        </a>
-        <a href="{% url 'inventario'%}" class="icon-card">
-            <img src="" alt="Inventario">
-            <p>Inventario</p>
-        </a>
-        <a href="{% url 'catalogoTrajes'%}" class="icon-card">
-            <img src="" alt="catalogoTrajes">
-            <p>Catalogo de Trajes Folkloricos</p>
-        </a>
-       
     </div>
+    
 </div>
 {% endblock %}
 
