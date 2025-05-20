@@ -1,0 +1,112 @@
+/* Contenedor principal para centrar y limitar ancho */
+ul {
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* dos columnas */
+    column-gap: 40px;
+    row-gap: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #2c3e50;
+    font-size: 16px;
+    background: transparent; /* si quieres mantener transparencia */
+}
+
+/* Cada item con borde, padding y bordes redondeados */
+ul li {
+    background: #fff;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Para los labels en negrita */
+ul li strong {
+    font-weight: 600;
+    margin-right: 8px;
+    display: inline-block;
+    width: 90px;
+}
+
+/* Título centrado igual que en form */
+h2 {
+    max-width: 900px;
+    margin: 30px auto 40px auto;
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Botón volver a la lista - estilo botón negro con texto blanco */
+a.volver-lista {
+    display: inline-block;
+    margin: 0 0 20px 0;
+    background-color: #000000;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid #000000;
+    white-space: nowrap;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Mantener color en hover (opcional) */
+a.volver-lista:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+}
+
+/* Contenedor de acciones centrado y con espacio entre botones */
+.actions {
+    max-width: 900px;
+    margin: 30px auto 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+
+/* Estilos comunes para ambos botones */
+.actions a {
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Botón Editar: fondo azul, texto blanco */
+.actions a.editar {
+    background-color: #1D12F2;
+    color: #FFFFFF;
+    border-color: #1D12F2;
+}
+
+.actions a.editar:hover {
+    background-color: #1a10d7; /* un poco más oscuro para hover */
+    border-color: #1a10d7;
+    color: #FFFFFF;
+}
+
+/* Botón Eliminar: fondo rojo, texto blanco */
+.actions a.eliminar {
+    background-color: #e74c3c;
+    color: #FFFFFF;
+    border-color: #e74c3c;
+}
+
+.actions a.eliminar:hover {
+    background-color: #cf3e31; /* un poco más oscuro para hover */
+    border-color: #cf3e31;
+    color: #FFFFFF;
+}
