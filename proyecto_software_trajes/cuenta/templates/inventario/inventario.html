@@ -1,6 +1,48 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
+
 {% block content %}
-<h1>
-    Pagina de Inventario
-</h1>
-{% endblock%}
+<h1>Inventario de Trajes</h1>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Región</th>
+            <th>Descripción</th>
+            <th>Talla</th>
+            <th>Género</th>
+            <th>Color</th>
+            <th>Material</th>
+            <th>Stock</th>
+            <th>Imagen Categoría</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for traje in trajes %}
+        <tr>
+            <td>{{ traje.nombre }}</td>
+            <td>{{ traje.categoria.nombre }}</td>
+            <td>{{ traje.region }}</td>
+            <td>{{ traje.descripcion }}</td>
+            <td>{{ traje.talla }}</td>
+            <td>{{ traje.get_genero_display }}</td>
+            <td>{{ traje.color_principal }}</td>
+            <td>{{ traje.material }}</td>
+            <td>{{ traje.stock_disponible }}</td>
+            <td>
+                {% if traje.categoria.imagen %}
+                    <img src="{{ traje.categoria.imagen.url }}" alt="Imagen categoría" width="80">
+                {% else %}
+                    Sin imagen
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">No hay trajes en el inventario.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

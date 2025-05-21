@@ -7,8 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
-    <title>{% block title %}Foliovear Bolivia{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Glegoo:wght@400;700&family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Slabo+13px&display=swap" rel="stylesheet">
+    <title>{% block title %}Foliovear Bolivia yerain{% endblock %}</title>
+    
 
     <style>
         body {
@@ -17,39 +26,56 @@
             padding: 0;
         }
         .navbar {
-            background-color: #fff;
+            background-color: #000000;
             padding: 15px 20px;
             border-bottom: 1px solid #e0e0e0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            
+        }
+        .logonav
+        {
+            width: 42px;
+            height: 40px;
+            padding-right: 10px;
         }
         .navbar-brand {
             font-weight: bold;
-            font-size: 1.2em;
+            display: flex;
+            font-size: 35px;
             text-decoration: none;
-            color: #333;
+            color: #ffffff;
+            font-family: "Boogaloo", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            align-items: center;
+
         }
         .nav-links {
             display: flex;
             gap: 20px;
+            color: #ffffff;
+            font-family: "Ubuntu Condensed", sans-serif;
+            
+            
+            font-size: 24px;
         }
         .nav-link {
             text-decoration: none;
-            color: #333;
+            color: #ffffff;
         }
         .nav-link:hover {
             text-decoration: underline;
         }
-        .content {
-            padding: 20px;
-        }
+        
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <div class="navbar">
-        <a href="/" class="navbar-brand">FOLKWEAR BOLIVIA</a>
+        
+        <a href="/" class="navbar-brand"><img src="/media/media/logofolklorear.png" alt=logoo" class="logonav">FOLKLOREAR</a>
         <div class="nav-links">
             <a href="{% url 'inicio' %}" class="nav-link">Inicio</a>
             <a href="{% url 'administracionCatalogo' %}">Administrar</a>
