@@ -1,6 +1,21 @@
 /* Estilos generales */
 .text-purple {
-    color: #7e3ff2;
+    color: rgb(59, 59, 59);
+    font-family: "Ubuntu Condensed", sans-serif;
+}
+.Contenecata a
+{
+    font-family: "Glegoo", serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    color: black;
+}
+.Contenecata p
+{
+    font-family: "Slabo 13px", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 .text-orange {
     color: #ff6b35;
