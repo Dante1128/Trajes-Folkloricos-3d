@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/editar_cliente.css' %}">
 <h2>Editar Cliente: {{ Usuarios.nombre }}</h2>
 <form method="post">
     {% csrf_token %}

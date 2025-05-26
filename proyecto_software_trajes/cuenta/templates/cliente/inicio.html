@@ -1,29 +1,137 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<head>
+    <style>
+        body{
+                background: #fff;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tituloo
+            {
+                font-family: "Boogaloo", sans-serif;
+                font-weight: 800;
+                font-style: normal;
+                font-size: 45px;
+                margin: 25px 0px 20px 30px;
+            }
+            .saludo {
+                font-size: 20px;
+                margin: -10px 0px 20px 30px;
+                font-family: "Glegoo", serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+            .Cuadrocolor
+            {
+                background-color: #f8b1b1;
+                height: 450px;
+                width: 1100px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                
+            }
+            .caja1
+            {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .icon-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 30px;
+                max-width: 890px;
+                margin: 0 auto;
+            }
+
+            .icon-card {
+                background-color: #ff7070;
+                border-radius: 12px;
+                color: white;
+                text-decoration: none;
+                transition: 0.3s ease;
+                font-family: "Glegoo", serif;
+                font-weight: 900;
+                font-style: normal;
+                display: flex;
+                align-items: center;
+                padding: 30px;
+                margin: 10px;
+            }
+
+            .icon-card:hover {
+                background-color: #b86c6c;
+            }
+
+            .icon-card img {
+                width: 77px;
+                height: 85px;
+                filter: invert(100%);
+            }
+
+            .icon-card p {
+                margin-top: 10px;
+                margin-left: 16px;
+                font-weight: bold;
+                font-size: 27px;
+
+            }
+
+            .logo-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo {
+                height: 60px;
+            }
+
+
+
+    </style>
+</head>
+{% endblock %}
+
 {% block content %}
 <div class="container">
-    <h1 class="saludo">Hola, {{ user.username }} 👋</h1>
-
-    <div class="icon-grid">
-        <a href="{% url 'clientes' %}" class="icon-card">
-            <img src="" alt="Clientes">
-            <p>Clientes</p>
-        </a>
-        <a href="{% url 'reserva'%}" class="icon-card">
-            <img src="" alt="Reservas">
-            <p>Reservas</p>
-        </a>
-        <a href="{% url 'inventario'%}" class="icon-card">
-            <img src="" alt="Inventario">
-            <p>Inventario</p>
-        </a>
-        <a href="{% url 'catalogoTrajes'%}" class="icon-card">
-            <img src="" alt="catalogoTrajes">
-            <p>Catalogo de Trajes Folkloricos</p>
-        </a>
-       
+    <h1 class="tituloo">ADMINISTRACIÓN DEL SISTEMA</h1>
+    <h1 class="saludo">Bienvenido/a, {{ user.username }} 👋 aqui podras gestionar el sistema.</h1>
+    <div class="Cuadrocolor">
+        <div class="icon-grid">
+            <div class="caja1">
+                <a href="{% url 'clientes' %}" class="icon-card">
+                    <img src="/media/media/iconocliente.png" alt="Clientes">
+                    <p>Clientes</p>
+                </a>
+                <a href="{% url 'reserva'%}" class="icon-card">
+                    <img src="/media/media/iconoreserva.png" alt="Reservas">
+                    <p>Reservas</p>
+                </a>
+            </div>
+            <div class="caja1">
+                <a href="{% url 'inventario'%}" class="icon-card">
+                    <img src="/media/media/iconoinven.png" alt="Inventario">
+                    <p>Inventario</p>
+                </a>
+                <a href="{% url 'catalogoTrajes'%}" class="icon-card">
+                    <img src="/media/media/iconoreportes.png" alt="catalogoTrajes">
+                    <p>Catálogo de Trajes Folklóricos</p>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
-

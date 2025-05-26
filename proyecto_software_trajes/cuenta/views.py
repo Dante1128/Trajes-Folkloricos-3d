@@ -79,14 +79,19 @@ def eliminar_cliente(request, cliente_id):
     return redirect('clientes')
 
 def catalogoTrajes(request):
-    return render(request, "catalogo/catalogo.html")
+     trajes = Traje.objects.select_related('categoria').all()
+     return render(request, 'catalogo/catalogo.html', {
+        'trajes': trajes
+    })
 
 def reserva(request):
-    return render(request, 'cliente/reserva.html' )
+    return render(request, 'reserva/reserva.html' )
 
 def inventario(request):
-    return render(request, 'inventario/inventario.html' )
-
+    trajes = Traje.objects.select_related('categoria').all()
+    return render(request, 'inventario/inventario.html', {
+        'trajes': trajes
+    })
 def administracionCatalogo(request):
     categorias = Categoria.objects.all()  
     trajes = Traje.objects.all()

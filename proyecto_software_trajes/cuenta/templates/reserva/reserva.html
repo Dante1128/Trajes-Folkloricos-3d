@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block extra_css %}
+<head>
+    <style>
+        .cuadroreserva
+        {
+            margin: 35px;
+        }
+        .tituloreserva
+        {
+            font-size: 33px;
+            color: rgb(59, 59, 59);
+            font-family: "Ubuntu Condensed", sans-serif;
+        }
+
+
+    </style>
+</head>
+{% endblock %}
+{% block content %}
+<div class="cuadroreserva">
+    <h1 class="tituloreserva">Página de Reserva</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Reserva</button>
+    </form>
+</div>
+{% endblock %}
