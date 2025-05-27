@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .cuadroreserva {
+        margin: 35px;
+    }
+    .tituloreserva {
+        font-size: 33px;
+        color: rgb(59, 59, 59);
+        font-family: "Ubuntu Condensed", sans-serif;
+    }
+    .form-section {
+        margin-bottom: 25px;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .errorlist {
+        color: red;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #2d89ef;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #1e5fad;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cuadroreserva">
+    <h1 class="tituloreserva">Registrar Reserva Completa</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="form-section">
+            <h3>Datos de la Reserva</h3>
+
+            <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
+            {{ form.usuario }}
+            {{ form.usuario.errors }}
+
+            <label for="{{ form.traje.id_for_label }}">{{ form.traje.label }}</label>
+            {{ form.traje }}
+            {{ form.traje.errors }}
+
+            <label for="{{ form.evento.id_for_label }}">{{ form.evento.label }}</label>
+            {{ form.evento }}
+            {{ form.evento.errors }}
+
+            <label for="{{ form.fecha_inicio.id_for_label }}">{{ form.fecha_inicio.label }}</label>
+            {{ form.fecha_inicio }}
+            {{ form.fecha_inicio.errors }}
+
+            <label for="{{ form.fecha_final.id_for_label }}">{{ form.fecha_final.label }}</label>
+            {{ form.fecha_final }}
+            {{ form.fecha_final.errors }}
+
+            <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
+            {{ form.estado }}
+            {{ form.estado.errors }}
+        </div>
+
+        <div class="form-section">
+            <h3>Datos de Pago</h3>
+
+            <label for="{{ form.monto.id_for_label }}">{{ form.monto.label }}</label>
+            {{ form.monto }}
+            {{ form.monto.errors }}
+
+            <label for="{{ form.metodo_pago.id_for_label }}">{{ form.metodo_pago.label }}</label>
+            {{ form.metodo_pago }}
+            {{ form.metodo_pago.errors }}
+
+            <label for="{{ form.estado_pago.id_for_label }}">{{ form.estado_pago.label }}</label>
+            {{ form.estado_pago }}
+            {{ form.estado_pago.errors }}
+
+            <label for="{{ form.referencia.id_for_label }}">{{ form.referencia.label }}</label>
+            {{ form.referencia }}
+            {{ form.referencia.errors }}
+        </div>
+
+        <div class="form-section">
+            <h3>Garantía</h3>
+
+            <label for="{{ form.estado_garantia.id_for_label }}">{{ form.estado_garantia.label }}</label>
+            {{ form.estado_garantia }}
+            {{ form.estado_garantia.errors }}
+
+            <label for="{{ form.descripcion_garantia.id_for_label }}">{{ form.descripcion_garantia.label }}</label>
+            {{ form.descripcion_garantia }}
+            {{ form.descripcion_garantia.errors }}
+        </div>
+
+        <button type="submit">Enviar Reserva</button>
+    </form>
+</div>
+{% endblock %}

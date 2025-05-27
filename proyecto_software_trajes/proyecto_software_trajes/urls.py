@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from cuenta.views import administracionCatalogo, agregarCategoria, catalogoTrajes, clientes, crear_cliente, editar_cliente, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_cliente, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_traje, reserva
+from cuenta.views import administracionCatalogo, agregarCategoria, catalogoTrajes, clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_cliente, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
@@ -15,14 +15,15 @@ urlpatterns = [
     path('inventario/',inventario, name='inventario'),
     path('catalogoTrajes/', catalogoTrajes, name='catalogoTrajes'),
     path('administracionCatalogo/', administracionCatalogo, name='administracionCatalogo'),
-    path('reserva/',reserva,name='reserva'),
     path('agregarCategoria/', agregarCategoria, name='agregar_categoria'),
     path('editar_categoria/<int:categoria_id>/',editarCategoria, name='editar_categoria'),
     path('eliminar_categoria/<int:id>/',eliminar_categoria, name='eliminar_categoria'),
     path('registrar_traje/', registrar_traje, name='registrar_traje'),
     path('editar_traje/<int:id>', editar_traje, name='editar_traje'),
     path('eliminar_traje/<int:id>/', eliminar_traje, name='eliminar_traje'),
-
+    path('reserva/',reserva,name='reserva'),
+    path('registrar_reserva/',registrar_reserva,name='registrar_reserva'),
+    path('editar_reserva/<int:reserva_id>/', editar_reserva, name='editar_reserva'),
     path('cerrar/', cerrar_sesion, name='cerrar_sesion'),
     
 

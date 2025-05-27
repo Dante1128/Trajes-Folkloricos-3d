@@ -78,26 +78,7 @@ class Modelo3D(models.Model):
         verbose_name_plural = "Modelos 3D"
 
 
-class Evento(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
-    fecha_inicio = models.DateField()
-    fecha_final = models.DateField()
-    ubicacion = models.CharField(max_length=200)  # Eliminado el duplicado
-    
-    def __str__(self):
-        return f"{self.nombre} ({self.fecha_inicio.strftime('%d/%m/%Y')} - {self.fecha_final.strftime('%d/%m/%Y')})"
-        
-    def duracion_dias(self):
-        """Calcula la duración del evento en días"""
-        if self.fecha_inicio and self.fecha_final:
-            delta = self.fecha_final - self.fecha_inicio
-            return delta.days + 1  # +1 porque incluye el primer día
-        return 0
-        
-    class Meta:
-        verbose_name = "Evento"
-        verbose_name_plural = "Eventos"
+
 
 
 class Alquiler(models.Model):
@@ -117,7 +98,8 @@ class Alquiler(models.Model):
     
     usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, related_name='alquileres')
     traje = models.ForeignKey('Traje', on_delete=models.CASCADE, related_name='alquileres')
-    evento = models.ForeignKey(Evento, on_delete=models.SET_NULL, null=True, blank=True, related_name='alquileres')
+    evento = models.CharField(max_length=255, null=True, blank=True)
+
     
     fecha_reserva = models.DateTimeField(default=timezone.now)
     fecha_inicio = models.DateField()
@@ -205,6 +187,7 @@ class PagoAlquiler(models.Model):
         ('efectivo', 'Efectivo'),
         ('tarjeta', 'Tarjeta'),
         ('transferencia', 'Transferencia'),
+        ('qr', 'QR' )
         # Puedes agregar más métodos si los usas
     ]
 
@@ -219,6 +202,7 @@ class PagoAlquiler(models.Model):
         return f"Pago #{self.id} - {self.estado}"
 class Garantia(models.Model):
     ESTADO_CHOICES = [
+        
         ('devuelto', 'Devuelto'),
         ('no_devuelto', 'No Devuelto'),
     ]

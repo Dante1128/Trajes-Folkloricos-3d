@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="contenedor-reservas">
+    <h1>Editar Reserva</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Actualizar Reserva</button>
+    </form>
+</div>
+{% endblock %}

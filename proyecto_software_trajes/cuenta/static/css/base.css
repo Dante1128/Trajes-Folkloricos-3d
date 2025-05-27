@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    background-color: #000000;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.logonav
+{
+    width: 42px;
+    height: 40px;
+    padding-right: 10px;
+}
+.navbar-brand {
+    font-weight: bold;
+    display: flex;
+    font-size: 35px;
+    text-decoration: none;
+    color: #ffffff;
+    font-family: "Boogaloo", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    align-items: center;
+
+}
+.nav-links {
+    display: flex;
+    gap: 20px;
+    color: #ffffff;
+    font-family: "Ubuntu Condensed", sans-serif;
+    
+    
+    font-size: 24px;
+}
+.nav-link {
+    text-decoration: none;
+    color: #ffffff;
+}
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    
+}
+.nav-link:hover {
+    text-decoration: underline;
+}

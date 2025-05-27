@@ -55,50 +55,34 @@ class TrajeForm(forms.ModelForm):
         ]
 
 
-class AlquilerForm(forms.ModelForm):
-    class Meta:
-        model = Alquiler
-        fields = [
-            'usuario',
-            'traje',
-            'evento',
-            'fecha_reserva',
-            'fecha_inicio',
-            'fecha_final',
-            'monto_total',
-            'metodo_pago',
-            'estado',
-        ]
-        widgets = {
-            'fecha_reserva': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
-            'fecha_final': forms.DateInput(attrs={'type': 'date'}),
-        }
 
-class PagoAlquilerForm(forms.ModelForm):
-    class Meta:
-        model = PagoAlquiler
-        fields = [
-            'alquiler',
-            'monto',
-            'fecha_pago',
-            'metodo_pago',
-            'estado',
-            'referencia',
-        ]
-        widgets = {
-            'fecha_pago': forms.DateInput(attrs={'type': 'date'}),
-        }
+class ReservaCompletaForm(forms.Form):
+    usuario = forms.ModelChoiceField(queryset=Usuario.objects.all())
+    traje = forms.ModelChoiceField(queryset=Traje.objects.all())
+    evento = forms.CharField(max_length=100)
+    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha_final = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+   
 
-class GarantiaForm(forms.ModelForm):
-    class Meta:
-        model = Garantia
-        fields = [
-            'alquiler',
-            'usuario',
-            'estado',
-            'descripcion',
-        ]
-        widgets = {
-            'descripcion': forms.Textarea(attrs={'rows': 3}),
-        }
+    estado = forms.ChoiceField(choices=Alquiler.ESTADO_CHOICES)
+    # Campos de pago
+    monto = forms.DecimalField(max_digits=10, decimal_places=2)
+    metodo_pago = forms.ChoiceField(choices=PagoAlquiler.METODO_CHOICES)
+    estado_pago = forms.ChoiceField(choices=PagoAlquiler.ESTADO_CHOICES)
+    referencia = forms.CharField(max_length=50, required=False)
+    
+    # Campos de garantía
+    estado_garantia = forms.ChoiceField(choices=Garantia.ESTADO_CHOICES)
+    descripcion_garantia = forms.CharField(widget=forms.Textarea, required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_inicio = cleaned_data.get("fecha_inicio")
+        fecha_final = cleaned_data.get("fecha_final")
+        monto = cleaned_data.get("monto")
+
+        if fecha_inicio and fecha_final and fecha_final < fecha_inicio:
+            raise forms.ValidationError("La fecha final debe ser igual o posterior a la fecha de inicio.")
+
+        if monto is not None and monto <= 0:
+            raise forms.ValidationError("El monto debe ser mayor a cero.")
