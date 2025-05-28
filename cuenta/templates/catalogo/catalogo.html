@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mi Proyecto{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/catalogo.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<h1 style="text-align: center; margin-bottom: 20px;">Catálogo de Trajes</h1>
+
+<div class="card-container">
+    {% for traje in trajes %}
+        <div class="card">
+            {% if traje.categoria.imagen %}
+                <img src="{{ traje.categoria.imagen.url }}" alt="Imagen categoría">
+            {% else %}
+                <img src="{% static 'default.jpg' %}" alt="Sin imagen">
+            {% endif %}
+            <h3>{{ traje.nombre }}</h3>
+            <p><strong>Categoría:</strong> {{ traje.categoria.nombre }}</p>
+            <p><strong>Región:</strong> {{ traje.region }}</p>
+            <p><strong>Talla:</strong> {{ traje.talla }}</p>
+            <p><strong>Género:</strong> {{ traje.get_genero_display }}</p>
+            <p><strong>Stock:</strong> {{ traje.stock_disponible }}</p>
+
+            <a href="{% url 'reserva' %}" class="reserva-icon" title="Reservar este traje">
+                <i class="fa-solid fa-calendar-plus"></i>
+            </a>
+        </div>
+    {% empty %}
+        <p>No hay trajes registrados.</p>
+    {% endfor %}
+</div>
+{% endblock %}

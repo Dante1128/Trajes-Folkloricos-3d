@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/clientes.css' %}">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Clientes</h2>
+    <a href="{% url 'crear_cliente' %}" class="btn">
+        + Agregar Cliente
+    </a>
+</div>
+
+<!-- Filtro de clientes activos o todos -->
+<form method="get" style="margin-bottom: 20px;">
+    <label for="mostrar_todos">
+        <input type="checkbox" name="mostrar_todos" id="mostrar_todos" onchange="this.form.submit()" {% if request.GET.mostrar_todos %}checked{% endif %}>
+        Mostrar todos los clientes
+    </label>
+</form>
+
+<h3>Lista de Clientes</h3>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: separate; border-spacing: 0;">
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.nombre }}</td>
+            <td>
+                <a href="{% url 'informacion_cliente' cliente.id %}">Ver</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay clientes registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Glegoo:wght@400;700&family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Slabo+13px&display=swap" rel="stylesheet">
+    <title>{% block title %}Foliovear Bolivia yerain{% endblock %}</title>
+
+   
+    {% block extra_css %}
+    
+    {% endblock %}
+</head>
+<body>
+    <div class="navbar">
+        
+        <a href="/" class="navbar-brand"><img src="{% static 'media/logofolklorear.png' %}" alt="logoo" class="logonav"/>FOLKLOREAR</a>
+        <div class="nav-links">
+            <a href="{% url 'inicio' %}" class="nav-link">Inicio</a>
+            <a href="{% url 'administracionCatalogo' %}">Administrar</a>
+            <a href="{{ user.username }}" class="nav-link">{{ user.username }}</a>
+            <a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a>
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        <!-- Contenido principal irá aquí -->
+        {% endblock %}
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

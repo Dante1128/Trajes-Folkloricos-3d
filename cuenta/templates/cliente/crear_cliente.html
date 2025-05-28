@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/crear_cliente.css' %}">
+<h2>Formulario de Cliente</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ formulario.non_field_errors }}
+
+    <label for="id_nombre">Nombre:</label>
+    {{ form.nombre.errors }}
+    {{ form.nombre }}<br>
+
+    <label for="id_apellido">Apellido:</label>
+    {{ form.apellido.errors }}
+    {{ form.apellido }}<br>
+
+    <label for="id_correo">Correo:</label>
+    {{ form.correo.errors }}
+    {{ form.correo }}<br>
+
+    <label for="id_celular">Celular:</label>
+    {{ form.celular.errors }}
+    {{ form.celular }}<br>
+
+    <label for="id_direccion">Dirección:</label>
+    {{ form.direccion.errors }}
+    {{ form.direccion }}<br>
+
+    <label for="id_estado">Estado:</label>
+    {{ form.estado.errors }}
+    {{ form.estado }}<br>
+
+    <button type="submit">Guardar</button>
+</form>
+{% endblock %}

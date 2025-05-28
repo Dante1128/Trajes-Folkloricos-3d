@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/reserva.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contenedor-reservas">
+    <div class="encabezado-lista">
+        <h1>Lista de Reservas</h1>
+        <a href="{% url 'registrar_reserva' %}" class="btn btn-primary btn-registrar">+ Nueva Reserva</a>
+    </div>
+
+    <table class="tabla-reservas">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Traje</th>
+                <th>Evento</th>
+                <th>Fecha Reserva</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Final</th>
+                <th>Monto Total</th>
+                <th>Estado de Pago</th>
+                <th>Estado del Alquiler</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alquiler in alquileres %}
+            <tr>
+                <td>{{ alquiler.usuario }}</td>
+                <td>{{ alquiler.traje }}</td>
+                <td>{{ alquiler.evento }}</td>
+                <td>{{ alquiler.fecha_reserva|date:"d/m/Y" }}</td>
+                <td>{{ alquiler.fecha_inicio|date:"d/m/Y" }}</td>
+                <td>{{ alquiler.fecha_final|date:"d/m/Y" }}</td>
+                <td>{{ alquiler.monto_total }} Bs.</td>
+                <td>
+                    {% with alquiler.pagoalquiler_set.last as pago %}
+                      {% if pago %}
+                          {{ pago.estado }}
+                      {% else %}
+                          Sin pago
+                      {% endif %}
+                    {% endwith %}
+                  </td>
+                <td>{{ alquiler.estado }}</td>
+                <td>
+                    <a href="{% url 'editar_reserva' alquiler.id %}">Editar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No hay reservas registradas.</td>
+            </tr>
+            
+           
+            
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
