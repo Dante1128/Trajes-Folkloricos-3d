@@ -32,11 +32,12 @@ class Usuario(models.Model):
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='media/', null=True, blank=True)
+    imagen = models.ImageField(upload_to='media/categoria', null=True, blank=True)
 
     def __str__(self):
         return self.nombre
     
+
 class Traje(models.Model):
     GENERO_CHOICES = [
         ('masculino', 'Masculino'),
@@ -44,7 +45,7 @@ class Traje(models.Model):
     ]
     
     nombre = models.CharField(max_length=100)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE)
     region = models.CharField(max_length=100)
     descripcion = models.TextField()
     talla = models.CharField(max_length=20)
@@ -52,7 +53,7 @@ class Traje(models.Model):
     color_principal = models.CharField(max_length=50)
     material = models.CharField(max_length=100)
     stock_disponible = models.PositiveIntegerField(default=0)
-   
+    imagen = models.ImageField(upload_to='trajes', null=True, blank=True)  
     
     def __str__(self):
         return f"{self.nombre} - {self.region} ({self.talla})"
@@ -60,7 +61,6 @@ class Traje(models.Model):
     class Meta:
         verbose_name = "Traje"
         verbose_name_plural = "Trajes"
-
 
 class Modelo3D(models.Model):
     traje = models.OneToOneField(  # Nombre de campo corregido a minúsculas

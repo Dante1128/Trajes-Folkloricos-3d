@@ -52,6 +52,7 @@ class TrajeForm(forms.ModelForm):
             'color_principal',
             'material',
             'stock_disponible',
+             'imagen',
         ]
 
 
