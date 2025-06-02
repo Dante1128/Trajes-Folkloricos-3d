@@ -6,52 +6,105 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Glegoo:wght@400;700&family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #f2f2f2;
+            font-size: 1rem;
             margin: 0%;
-            padding: 0%;
-            width: 100%;
 
         }
         .login-container {
             display: flex;
-            min-height: 100vh;
+            height: 100%;
+            width: 100%;
         }
-        .form-section {
+        .Cuadro1 {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px 60px 140px;
+            padding-left: 85px;
             background-color: #f1f1f1;
-            font-family: "Ubuntu Condensed", sans-serif;
+            
             font-weight: 400;
             font-style: normal;
             font-size: 22px;
+            min-height: 100vh;
+            width: 50%;
+        }
+        .cuadrotexto
+        {
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+        }
+        .textocuadro1
+        {
+            font-size: 40px;
+            flex-direction: column;
+            font-family: "Ubuntu Condensed", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            padding: 10px;
+        
         }
         .logotip
         {
-            height: 240px;
-            padding-bottom: 10px;
-            padding-left: 150px;
+            height: 300px;
+            padding-bottom: 0px;
+            padding-left: 40px;
         }
         .form-wrapper {
-            
-            max-width: 500px;
+            max-width: 330px;
             width: 100%;
         }
-        .image-section {
-            
+        .cuadrotexto label
+        {
+            font-size: 20px;
+            font-family: "Glegoo", serif;
+            font-weight: 600;
+            font-style: normal;
+
+        }
+        .cuadrotexto input
+        {
+            font-size: 17px;
+            font-family: "Glegoo", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        .cuadrotexto button
+        {
+            font-size: 19px;
+            font-family: "Glegoo", serif;
+            font-weight: 600;
+        }
+        .Cuadro2 {
+            display: flex;
             flex: 1;
             background-color: #f2f2f2;
+            height: 812px;
+            width: 50%;
+            
+            justify-content: flex-end;
         }
-        .imagee
+        .imagencuadro2
         {
-            margin-left: 135px;
-            width: 500px;
-            height: 641px;
+            height: 812px;
         }
+        
         .btn-outline-dark {
             display: flex;
             align-items: center;
@@ -62,29 +115,31 @@
 </head>
 <body>
 <div class="login-container">
-    <div class="form-section">
+    <div class="Cuadro1">
         <div class="form-wrapper">
             <img src="/media/media/logofolklorear.png" alt="" class="logotip">
-            <h2 class="mb-4 text-center">Iniciar Sesión</h2>
-            <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="username" class="form-label">Usuario</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
-                </div>
-                <button type="submit" class="btn btn-outline-dark w-100">
-                    Siguiente
-                    <span>&rarr;</span>
-                </button>
-            </form>
+            <div class="cuadrotexto">
+                <h2 class="textocuadro1">Iniciar Sesión</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+                    </div>
+                    <button type="submit" class="btn btn-outline-dark w-100">
+                        Siguiente
+                        <span>&rarr;</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="image-section">
-        <img src="/media/media/iniciasesion.png" alt="imagendiablada" class="imagee">
+    <div class="Cuadro2">
+        <img src="/media/media/iniciasesion.png" alt="imagendiablada" class="imagencuadro2">
     </div>
 </div>
 </body>
