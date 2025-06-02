@@ -1,42 +1,45 @@
-body {
+body{
     background: #fff;
     margin: 0;
     padding: 0;
 }
 
 .container {
+    background-image: url("/media/media/fondoinicio.png");
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;            
+    height: 100%;
 }
 
-.tituloo {
-    font-family: "Boogaloo", sans-serif;
+.tituloo
+{
+    font-family: "Titillium Web", sans-serif;
     font-weight: 800;
     font-style: normal;
     font-size: 45px;
-    margin: 25px 0px 20px 30px;
+    margin: 20px 525px 20px 0px;
+    color: rgb(59, 59, 59);
 }
-
 .saludo {
-    font-size: 20px;
-    margin: -10px 0px 20px 30px;
-    font-family: "Glegoo", serif;
-    font-weight: 400;
+    font-size: 23px;
+    margin: 0px 310px 20px 0px;
+    font-family: "Slabo 13px", serif;
+    font-weight: 600;
     font-style: normal;
 }
-
-.Cuadrocolor {
-    background-color: #f8b1b1;
-    height: 450px;
-    width: 1100px;
+.Cuadrocolor
+{
+    background-color: #5c5e5f57;
+    height: 500px;
+    width: 1160px;
     border-radius: 10px;
     display: flex;
-    align-items: center;
+    align-items: center;            
 }
-
-.caja1 {
+.caja1
+{
     display: flex;
     flex-direction: column;
 }
@@ -44,13 +47,13 @@ body {
 .icon-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 30px;
-    max-width: 890px;
+    gap: 110px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .icon-card {
-    background-color: #ff7070;
+    background-color: #0b113f;
     border-radius: 12px;
     color: white;
     text-decoration: none;
@@ -64,14 +67,14 @@ body {
     margin: 10px;
 }
 
-.icon-card:hover {
-    background-color: #b86c6c;
-}
+    .icon-card:hover {
+        background-color: #6cb88e;
+    }
 
-.icon-card img {
+.imagencuadro {
     width: 77px;
     height: 85px;
-    filter: invert(100%);
+
 }
 
 .icon-card p {
@@ -79,6 +82,7 @@ body {
     margin-left: 16px;
     font-weight: bold;
     font-size: 27px;
+
 }
 
 .logo-header {
@@ -88,5 +92,4 @@ body {
 }
 
 .logo {
-    height: 60px;
-}
+    height: 60px;}
