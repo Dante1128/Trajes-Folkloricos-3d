@@ -1,8 +1,14 @@
+from django import views
 from django.contrib import admin
-from django.urls import path
-from cuenta.views import administracionCatalogo, agregarCategoria, catalogoTrajes, clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_cliente, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva
+from django.urls import include, path
+from cuenta.views import CategoriaViewSet, TrajeViewSet, administracionCatalogo, agregarCategoria, catalogoTrajes, cliente, clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_cliente, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+router = DefaultRouter()
+router.register(r'categorias', CategoriaViewSet, basename='categoria')
+router.register(r'trajes', TrajeViewSet, basename='traje')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', iniciar_sesion, name='login'),
@@ -25,9 +31,13 @@ urlpatterns = [
     path('registrar_reserva/',registrar_reserva,name='registrar_reserva'),
     path('editar_reserva/<int:reserva_id>/', editar_reserva, name='editar_reserva'),
     path('cerrar/', cerrar_sesion, name='cerrar_sesion'),
+    path('cliente/', cliente, name='client'),#inseguro 
+
+
+
+    # API URLs
+     path('api/', include(router.urls)),
     
-
-
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

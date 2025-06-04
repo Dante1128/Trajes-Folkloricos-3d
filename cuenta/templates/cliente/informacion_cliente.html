@@ -3,6 +3,9 @@
 
 {% block content %}
 
+
+<p>{{ cliente.nombre|safe }}</p>
+
 <link rel="stylesheet" href="{% static 'css/informacion_cliente.css' %}">
 <a href="{% url 'clientes' %}" class="volver-lista">← Volver a la lista</a>
 <h2>Información del Cliente</h2>

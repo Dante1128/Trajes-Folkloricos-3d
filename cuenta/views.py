@@ -1,4 +1,6 @@
 from django import forms
+from django.db import connection
+from django.http import HttpResponse
 from django.utils import timezone
 from pyexpat.errors import messages
 from django.forms import ModelForm
@@ -8,6 +10,29 @@ from .forms import  CategoriaForm, ClienteForm, ReservaCompletaForm, TrajeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
+from rest_framework import viewsets
+from .models import Categoria
+from .serializers import CategoriaSerializer, TrajeSerializer
+
+
+
+
+
+def cliente(request):
+    nombre = request.GET.get('username', '')
+    
+    # Construcción insegura de consulta SQL concatenando el parámetro directamente
+    query = f"SELECT * FROM auth_user WHERE username = '{nombre}'"
+    
+    with connection.cursor() as cursor:
+        cursor.execute(query)  # Aquí está la vulnerabilidad: parámetro no escapado
+        filas = cursor.fetchall()
+
+    resultados = "<br>".join([str(fila) for fila in filas])
+    return HttpResponse(f"Resultados:<br>{resultados}")
+
+
+
 
 
 
@@ -89,7 +114,6 @@ def catalogoTrajes(request):
         'trajes': trajes
     })
 
-
 def inventario(request):
     trajes = Traje.objects.select_related('categoria').all()
     return render(request, 'inventario/inventario.html', {
@@ -119,14 +143,14 @@ def editarCategoria(request, categoria_id):
         form = CategoriaForm(request.POST, request.FILES, instance=categoria)
         if form.is_valid():
             form.save()
-            return redirect('administracionCatalogo')  # Redirige después de guardar
+            return redirect('administracionCatalogo')  
     else:
         form = CategoriaForm(instance=categoria)
     return render(request, 'catalogo/editar_categoria.html', {'form': form, 'categoria': categoria})
 
 
 def eliminar_categoria(request, id):
-    categoria = get_object_or_404(Categoria, id=id)  # Aquí se usa `id`, NO `categoria_id`
+    categoria = get_object_or_404(Categoria, id=id)  
     categoria.delete()
     return redirect('administracionCatalogo') 
 
@@ -136,7 +160,7 @@ def registrar_traje(request):
         form = TrajeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('administracionCatalogo')  # Asegúrate de que esta URL esté definida en urls.py
+            return redirect('administracionCatalogo')  
     else:
         form = TrajeForm()
 
@@ -250,7 +274,7 @@ def editar_reserva(request, reserva_id):
 
          
 
-            return redirect('reserva')  # Ajusta según tu URL para listar reservas
+            return redirect('reserva')  
 
     else:
       
@@ -275,3 +299,28 @@ def editar_reserva(request, reserva_id):
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
+
+
+
+
+'''
+Serializers for the API views
+'''
+
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+    
+class TrajeViewSet(viewsets.ModelViewSet):
+    queryset = Traje.objects.all()
+    serializer_class = TrajeSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        categoria_id = self.request.query_params.get('categoria')
+        if categoria_id:
+            queryset = queryset.filter(categoria_id=categoria_id)
+        return queryset
