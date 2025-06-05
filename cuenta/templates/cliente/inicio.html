@@ -8,26 +8,26 @@
 {% block content %}
 <div class="container">
     <h1 class="tituloo">ADMINISTRACIÓN DEL SISTEMA</h1>
-    <h1 class="saludo">Bienvenido/a, {{ user.username }} 👋 aquí podrás gestionar el sistema.</h1>
+    <h1 class="saludo">Bienvenido/a, {{ user.username }} 🌟 Aquí puedes gestionar todos los aspectos del sistema.</h1>
     <div class="Cuadrocolor">
         <div class="icon-grid">
             <div class="caja1">
                 <a href="{% url 'clientes' %}" class="icon-card">
-                    <img src="{% static 'media/iconocliente.png' %}" alt="Clientes">
+                    <img src="{% static 'media/iconocliente.png' %}" class="imagencuadro" alt="Clientes">
                     <p>Clientes</p>
                 </a>
                 <a href="{% url 'reserva' %}" class="icon-card">
-                    <img src="{% static 'media/iconoreserva.png' %}" alt="Reservas">
+                    <img src="{% static 'media/iconoreserva.png' %}" class="imagencuadro" alt="Reservas">
                     <p>Reservas</p>
                 </a>
             </div>
             <div class="caja1">
                 <a href="{% url 'inventario' %}" class="icon-card">
-                    <img src="{% static 'media/iconoinven.png' %}" alt="Inventario">
+                    <img src="{% static 'media/iconoinven.png' %}" class="imagencuadro" alt="Inventario">
                     <p>Inventario</p>
                 </a>
                 <a href="{% url 'catalogoTrajes' %}" class="icon-card">
-                    <img src="{% static 'media/iconoreportes.png' %}" alt="Catálogo de Trajes">
+                    <img src="{% static 'media/iconoreportes.png' %}" class="imagencuadro" alt="Catálogo de Trajes">
                     <p>Catálogo de Trajes Folklóricos</p>
                 </a>
             </div>
