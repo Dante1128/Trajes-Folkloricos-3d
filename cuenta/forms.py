@@ -40,6 +40,7 @@ class CategoriaForm(forms.ModelForm):
         }
 
 class TrajeForm(forms.ModelForm):
+    modelo_3d = forms.FileField(required=False, label="Archivo Modelo 3D")
     class Meta:
         model = Traje
         fields = [
@@ -53,6 +54,7 @@ class TrajeForm(forms.ModelForm):
             'material',
             'stock_disponible',
              'imagen',
+             'modelo_3d_url',
         ]
 
 

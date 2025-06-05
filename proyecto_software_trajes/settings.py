@@ -30,7 +30,7 @@ DEBUG = True
 
 #ALLOWED_HOSTS = ['3.17.208.88','localhost']
 
-ALLOWED_HOSTS = ['192.168.0.7','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['172.172.10.107','localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,7 +83,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "trajesFolkloricos",
         "USER": "postgres",
-        "PASSWORD": "larry",
+        "PASSWORD": "2811",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

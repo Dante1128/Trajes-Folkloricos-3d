@@ -5,7 +5,7 @@ from django.utils import timezone
 from pyexpat.errors import messages
 from django.forms import ModelForm
 from django.shortcuts import get_object_or_404, render
-from .models import Alquiler, Categoria, Garantia, Modelo3D, PagoAlquiler, Traje, Usuario
+from .models import Alquiler, Categoria, Garantia,  PagoAlquiler, Traje, Usuario
 from .forms import  CategoriaForm, ClienteForm, ReservaCompletaForm, TrajeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
@@ -13,6 +13,32 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from .models import Categoria
 from .serializers import CategoriaSerializer, TrajeSerializer
+import firebase_admin
+from firebase_admin import credentials, storage
+
+
+'''
+Firebase Storage
+'''
+# Inicializa Firebase solo una vez (por ejemplo, en settings.py o al inicio de la vista)
+cred = credentials.Certificate("d-trajes-folkloricos-firebase-adminsdk-fbsvc-f7abad95d9.json")
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'd-trajes-folkloricos.firebasestorage.app'
+})
+
+
+
+
+
+def subir_a_firebase(file_obj, nombre_archivo):
+    bucket = storage.bucket()
+    blob = bucket.blob(f'modelos_3d/{nombre_archivo}')
+    blob.upload_from_file(file_obj)
+    blob.make_public()  # Opcional: hace el archivo accesible públicamente
+    return blob.public_url
+
+
+
 
 
 
@@ -157,15 +183,18 @@ def eliminar_categoria(request, id):
 
 def registrar_traje(request):
     if request.method == 'POST':
-        form = TrajeForm(request.POST)
+        form = TrajeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('administracionCatalogo')  
+            traje = form.save(commit=False)
+            archivo = request.FILES.get('modelo_3d')
+            if archivo:
+                url = subir_a_firebase(archivo, archivo.name)  # Tu función personalizada
+                traje.modelo_3d_url = url
+            traje.save()
+            return redirect('administracionCatalogo')
     else:
         form = TrajeForm()
-
     return render(request, 'catalogo/registrar_traje.html', {'form': form})
-
 
 def editar_traje(request):
     return render(request, '')
@@ -299,7 +328,6 @@ def editar_reserva(request, reserva_id):
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
-
 
 
 

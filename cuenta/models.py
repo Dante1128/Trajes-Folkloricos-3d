@@ -56,33 +56,14 @@ class Traje(models.Model):
     color_principal = models.CharField(max_length=50)
     material = models.CharField(max_length=100)
     stock_disponible = models.PositiveIntegerField(default=0)
-    imagen = models.ImageField(upload_to='trajes', null=True, blank=True)  
-    
+    imagen = models.ImageField(upload_to='trajes/', null=True, blank=True)  
+    modelo_3d_url = models.URLField(null=True, blank=True)
     def __str__(self):
         return f"{self.nombre} - {self.region} ({self.talla})"
         
     class Meta:
         verbose_name = "Traje"
         verbose_name_plural = "Trajes"
-
-class Modelo3D(models.Model):
-    traje = models.OneToOneField(  # Nombre de campo corregido a minúsculas
-        Traje, 
-        on_delete=models.CASCADE,
-        related_name='modelo_3d'
-    )
-    url = models.URLField(max_length=255)
-    
-    def __str__(self):
-        return f"Modelo 3D de {self.traje.nombre}"
-        
-    class Meta:
-        verbose_name = "Modelo 3D"
-        verbose_name_plural = "Modelos 3D"
-
-
-
-
 
 class Alquiler(models.Model):
     ESTADO_CHOICES = [
@@ -137,34 +118,6 @@ class Alquiler(models.Model):
         hoy = timezone.now().date()
         return hoy > self.fecha_final and self.estado != 'devuelto' and self.estado != 'cancelado'
     
-
-class ImagenTraje(models.Model):
-    traje = models.ForeignKey(
-        Traje,
-        on_delete=models.CASCADE,
-        related_name='imagenes'
-    )
-    ruta = models.ImageField(upload_to='trajes/')
-    descripcion = models.CharField(max_length=255, blank=True)
-    es_principal = models.BooleanField(default=False)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"Imagen de {self.traje.nombre} - {self.descripcion[:30]}"
-    
-    class Meta:
-        verbose_name = "Imagen de Traje"
-        verbose_name_plural = "Imágenes de Trajes"
-        ordering = ['-es_principal', '-fecha_creacion']  # Primero las principales, luego las más recientes
-        
-    def save(self, *args, **kwargs):
-        # Si esta imagen se marca como principal, desmarcar las demás
-        if self.es_principal:
-            ImagenTraje.objects.filter(
-                traje=self.traje, 
-                es_principal=True
-            ).exclude(id=self.id).update(es_principal=False)
-        super().save(*args, **kwargs)
 
 
 class Reseña(models.Model):
