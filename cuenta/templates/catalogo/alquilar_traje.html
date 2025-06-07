@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Alquilar Traje: {{ traje.nombre }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a href="{% url 'crear_cliente' %}" class="btn btn-link" style="margin-bottom: 16px;">Registrar nuevo cliente</a>
+        <button type="submit" class="btn btn-success">Alquilar</button>
+        <a href="{% url 'catalogoTrajes' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

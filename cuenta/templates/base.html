@@ -48,6 +48,13 @@
                 <a href="{% url 'administracionCatalogo' %}" class="nav-link">
                     <i class="fas fa-cog"></i> Administrar
                 </a>
+                <a href="{% url 'mis_alquileres' %}" class="nav-link">
+                    <i class="fas fa-list"></i> Mis Alquileres
+                </a>
+                  <a href="{% url 'informes_reportes' %}" class="nav-link">
+                        <i class="fas fa-chart-line"></i> Informes y Reportes
+                    </a>
+
                 {% if user.is_authenticated %}
                     <span class="nav-link" style="cursor:default;">
                         <i class="fas fa-user"></i> {{ user.username }}

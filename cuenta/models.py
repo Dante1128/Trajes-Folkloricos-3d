@@ -71,6 +71,7 @@ class Alquiler(models.Model):
         ('activo', 'Activo'),
         ('devuelto', 'Devuelto'),
         ('cancelado', 'Cancelado'),
+        ('alquilado', 'Alquilado'),  # Nuevo estado agregado
     ]
     
     METODO_PAGO_CHOICES = [
@@ -88,10 +89,11 @@ class Alquiler(models.Model):
     fecha_reserva = models.DateTimeField(default=timezone.now)
     fecha_inicio = models.DateField()
     fecha_final = models.DateField()
-    
+    cantidad = models.PositiveIntegerField(default=1)  # <-- Nuevo campo
     monto_total = models.DecimalField(max_digits=10, decimal_places=2)
     metodo_pago = models.CharField(max_length=15, choices=METODO_PAGO_CHOICES)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='reservado')
+    # Nuevo campo
     
     def __str__(self):
         return f"Alquiler #{self.id} - {self.usuario.nombre} - {self.traje.nombre}"
@@ -170,6 +172,6 @@ class Garantia(models.Model):
 
     def __str__(self):
         return f"Garantía de {self.usuario} - {self.estado}"
-    
+
 
 

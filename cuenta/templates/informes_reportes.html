@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/informe.css' %}">
+
+<div class="container mt-5" id="informePDF">
+    <div class="no-pdf">
+        <h1 class="mb-4 text-center text-primary">Informe de Alquileres y Reservas</h1>
+
+        <form method="get" class="row g-3 mb-4 bg-white p-4 rounded shadow-lg border border-primary">
+            <div class="col-md-3">
+                <label for="fecha_desde" class="form-label fw-bold text-primary">Desde:</label>
+                <input type="date" id="fecha_desde" name="fecha_desde" class="form-control border-primary shadow-sm" value="{{ fecha_desde|date:'Y-m-d' }}">
+            </div>
+            <div class="col-md-3">
+                <label for="fecha_hasta" class="form-label fw-bold text-primary">Hasta:</label>
+                <input type="date" id="fecha_hasta" name="fecha_hasta" class="form-control border-primary shadow-sm" value="{{ fecha_hasta|date:'Y-m-d' }}">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100 shadow-lg fw-bold">Filtrar</button>
+            </div>
+        </form>
+
+        <div class="text-end mb-4">
+            <button id="exportPdf" class="btn btn-danger shadow-lg fw-bold">Exportar a PDF</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-success">Trajes Alquilados</h5>
+                <p class="card-text">Cantidad total de trajes alquilados: <strong>{{ total_trajes_alquilados }}</strong></p>
+                {% if alquileres %}
+                    <table class="table table-striped table-hover mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Fin</th>
+                                <th>Fecha de Reserva</th>
+                                <th>Usuario</th>
+                                <th>Traje</th>
+                                <th>Cantidad</th>
+                                <th>Evento</th>
+                                <th>Monto Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for alquiler in alquileres %}
+                                <tr>
+                                    <td>{{ alquiler.fecha_inicio }}</td>
+                                    <td>{{ alquiler.fecha_final }}</td>
+                                    <td>{{ alquiler.fecha_reserva }}</td>
+                                    <td>{{ alquiler.usuario.nombre }}</td>
+                                    <td>{{ alquiler.traje.nombre }}</td>
+                                    <td>{{ alquiler.cantidad }}</td>
+                                    <td>{{ alquiler.evento }}</td>
+                                    <td>{{ alquiler.monto_total }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">No hay trajes alquilados en este periodo.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-info">Trajes Reservados</h5>
+                <p class="card-text">Cantidad total de trajes reservados: <strong>{{ total_trajes_reservados }}</strong></p>
+                {% if reservas %}
+                    <table class="table table-striped table-hover mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Fin</th>
+                                <th>Fecha de Reserva</th>
+                                <th>Usuario</th>
+                                <th>Traje</th>
+                                <th>Cantidad</th>
+                                <th>Evento</th>
+                                <th>Monto Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reserva in reservas %}
+                                <tr>
+                                    <td>{{ reserva.fecha_inicio }}</td>
+                                    <td>{{ reserva.fecha_final }}</td>
+                                    <td>{{ reserva.fecha_reserva }}</td>
+                                    <td>{{ reserva.usuario.nombre }}</td>
+                                    <td>{{ reserva.traje.nombre }}</td>
+                                    <td>{{ reserva.cantidad }}</td>
+                                    <td>{{ reserva.evento }}</td>
+                                    <td>{{ reserva.monto_total }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">No hay trajes reservados en este periodo.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById('exportPdf').addEventListener('click', function (event) {
+        event.preventDefault(); // Evita que el botón recargue la página
+        const element = document.getElementById('informePDF');
+        const options = {
+            margin: 0.5,
+            filename: 'Informe_Alquileres_Reservas.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(options).from(element).save().catch(err => {
+            console.error('Error al generar el PDF:', err);
+            alert('Hubo un problema al generar el PDF. Por favor, revisa la consola para más detalles.');
+        });
+    });
+</script>
+
+{% endblock %}

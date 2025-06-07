@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center text-primary">Detalle de la Reserva</h1>
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <h5 class="card-title">Usuario: {{ alquiler.usuario }}</h5>
+            <p><strong>Traje:</strong> {{ alquiler.traje }}</p>
+            <p><strong>Evento:</strong> {{ alquiler.evento }}</p>
+            <p><strong>Fecha Reserva:</strong> {{ alquiler.fecha_reserva|date:"d/m/Y" }}</p>
+            <p><strong>Fecha Inicio:</strong> {{ alquiler.fecha_inicio|date:"d/m/Y" }}</p>
+            <p><strong>Fecha Final:</strong> {{ alquiler.fecha_final|date:"d/m/Y" }}</p>
+            <p><strong>Monto Total:</strong> {{ alquiler.monto_total }} Bs.</p>
+            <p><strong>Estado Reserva:</strong> {{ alquiler.estado }}</p>
+            {% if garantia %}
+                <p><strong>Garantía:</strong> {{ garantia.estado }}</p>
+                <p><strong>Descripción Garantía:</strong> {{ garantia.descripcion }}</p>
+            {% endif %}
+            {% if pago %}
+                <p><strong>Estado Pago:</strong> {{ pago.estado }}</p>
+                <p><strong>Referencia Pago:</strong> {{ pago.referencia }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="text-end mt-4">
+        <a href="{% url 'reserva' %}" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+{% endblock %}
