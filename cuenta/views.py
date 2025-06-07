@@ -34,28 +34,12 @@ def subir_a_firebase(file_obj, nombre_archivo):
     bucket = storage.bucket()
     blob = bucket.blob(f'modelos_3d/{nombre_archivo}')
     blob.upload_from_file(file_obj)
-    blob.make_public()  # Opcional: hace el archivo accesible públicamente
+    blob.make_public()  
     return blob.public_url
 
 
 
 
-
-
-
-
-def cliente(request):
-    nombre = request.GET.get('username', '')
-    
-    # Construcción insegura de consulta SQL concatenando el parámetro directamente
-    query = f"SELECT * FROM auth_user WHERE username = '{nombre}'"
-    
-    with connection.cursor() as cursor:
-        cursor.execute(query)  # Aquí está la vulnerabilidad: parámetro no escapado
-        filas = cursor.fetchall()
-
-    resultados = "<br>".join([str(fila) for fila in filas])
-    return HttpResponse(f"Resultados:<br>{resultados}")
 
 
 
