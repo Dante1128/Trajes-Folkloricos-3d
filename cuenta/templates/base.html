@@ -36,10 +36,14 @@
         <div class="sidebar">
             <a href="/" class="navbar-brand">
                 <span style="display:flex;align-items:center;">
-                    <img src="{% static 'media/logofolklorear.png' %}" alt="logoo" class="logonav"/>
-                    FOLKLOREAR
+                    <img src="{% static 'media/logofolklo.png' %}" alt="logoo" class="logonav"/>
+                    
                 </span>
-                <i class="fas fa-external-link-alt"></i>
+                <div class="logoletra">
+                    <p>FOLKLOREAR</p>
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                
             </a>
             <div class="nav-links">
                 <a href="{% url 'inicio' %}" class="nav-link">
@@ -58,7 +62,7 @@
                 </a>
             </div>
             <div class="user-section">
-                <img src="{% static 'media/default_avatar.png' %}" alt="avatar" class="user-avatar">
+                <img src="{% static 'media/kirby.png' %}" alt="avatar" class="user-avatar">
                 <div class="user-info">
                     <span class="username">{{ user.username }}</span>
                     <span class="role">Administrador</span>
