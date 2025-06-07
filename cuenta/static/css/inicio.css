@@ -3,10 +3,20 @@ body{
     margin: 0;
     padding: 0;
 }
-
+.imagefondo
+{
+    
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    z-index: 0;
+}
 .container {
-    background-image: url("/media/media/fondoinicio.png");
-    padding: 20px;
+    
+    position: relative;
+    z-index: 1;
+    padding: 6% 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;            
@@ -16,45 +26,56 @@ body{
 .tituloo
 {
     font-family: "Titillium Web", sans-serif;
-    font-weight: 800;
+    font-weight: 700;
     font-style: normal;
-    font-size: 45px;
-    margin: 20px 525px 20px 0px;
+    font-size: 2.5vw;
+    margin: 18px 335px 10px 0;
     color: rgb(59, 59, 59);
 }
 .saludo {
-    font-size: 23px;
-    margin: 0px 310px 20px 0px;
+    font-size: 1.5vw;
+    margin: 0 60px 40px 0;
     font-family: "Slabo 13px", serif;
-    font-weight: 600;
+    font-weight: 500;
     font-style: normal;
 }
-.Cuadrocolor
-{
-    background-color: #5c5e5f57;
-    height: 500px;
-    width: 1160px;
+
+.Cuadrocolor {
+    background-color: #a7a7a757;
+    flex: 1 1 auto;
+    width: 60vw;
+    max-width: 1100px;
     border-radius: 10px;
     display: flex;
-    align-items: center;            
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    min-width: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+    height: 60vh;
+    max-height: 50vh;
+    overflow: hidden;
 }
-.caja1
-{
+
+.caja1 {
     display: flex;
     flex-direction: column;
+    gap: 5.5vh;
 }
 
 .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 110px;
-    max-width: 1000px;
-    margin: 0 auto;
+    display: flex;
+    gap: 10vw;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .icon-card {
-    background-color: #0b113f;
-    border-radius: 12px;
+    background-color: #1b1e2f;
+    border-radius: 10px;
     color: white;
     text-decoration: none;
     transition: 0.3s ease;
@@ -63,26 +84,33 @@ body{
     font-style: normal;
     display: flex;
     align-items: center;
-    padding: 30px;
-    margin: 10px;
+    padding: 1.5vw 1.5vw;
+    margin: 0;
+    min-width: 310px;
+    max-width: 310px;
+    min-height: 120px;
+    max-height: 120px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
-    .icon-card:hover {
-        background-color: #6cb88e;
-    }
+.icon-card:hover {
+    background-color: #60748b;
+}
 
 .imagencuadro {
-    width: 77px;
-    height: 85px;
-
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
 }
 
 .icon-card p {
     margin-top: 10px;
-    margin-left: 16px;
+    margin-left: 7px;
     font-weight: bold;
-    font-size: 27px;
-
+    font-size: 1.6vw;
+    min-width: 0;
+    white-space: normal;
 }
 
 .logo-header {

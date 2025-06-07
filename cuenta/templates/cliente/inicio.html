@@ -6,10 +6,13 @@
 {% endblock %}
 
 {% block content %}
+<img src="{% static 'media/fondoextenso1.png' %}" alt="fondo" class="imagefondo">
 <div class="container">
+    
     <h1 class="tituloo">ADMINISTRACIÓN DEL SISTEMA</h1>
     <h1 class="saludo">Bienvenido/a, {{ user.username }} 🌟 Aquí puedes gestionar todos los aspectos del sistema.</h1>
     <div class="Cuadrocolor">
+
         <div class="icon-grid">
             <div class="caja1">
                 <a href="{% url 'clientes' %}" class="icon-card">

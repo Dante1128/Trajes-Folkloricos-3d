@@ -16,8 +16,8 @@ body {
 }
 
 .sidebar {
-    width: 265px;
-    background: #fff;
+    width: 20%;
+    background: #dddddd;
     color: #111;
     padding: 32px 0 0 0;
     display: flex;
@@ -29,15 +29,22 @@ body {
 
     overflow-y: visible;
     box-sizing: border-box;
-    border-right: 1px solid #ececec;
+    border-right: 1px solid #c1c1c1;
     box-shadow: 2px 0 18px 0 rgba(126,63,242,0.07), 0 2px 8px rgba(40,167,69,0.03);
     position: relative;
 }
+.logoletra
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -3px;
+}
 
 .sidebar .navbar-brand {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     color: #111 !important;
-    margin-bottom: 36px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -46,11 +53,12 @@ body {
     letter-spacing: 1px;
     padding: 0 32px 0 32px;
     justify-content: space-between;
+    flex-direction: column;
 }
 
 .sidebar .logonav {
-    width: 38px;
-    height: 36px;
+    width: 90px;
+    height: 90px;
     padding-right: 10px;
 }
 
@@ -67,8 +75,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #222 !important;
-    font-size: 1.08rem;
+    color: #000000 !important;
+    font-size: 1.2rem;
     text-decoration: none;
     font-family: "Ubuntu Condensed", sans-serif;
     padding: 8px 16px;
@@ -83,7 +91,7 @@ body {
 .sidebar .nav-link i,
 .sidebar .nav-links a i {
     font-size: 1.2em;
-    color: #888;
+    color: #8f8f8f;
     min-width: 22px;
     text-align: center;
 }
@@ -110,7 +118,7 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #fff;
+    background: #dddddd;
 }
 
 .sidebar .user-avatar {
@@ -143,12 +151,12 @@ body {
 
 .content {
     flex: 1;
-    padding: 32px 24px 24px 24px; /* Reduce padding */
+    
     box-sizing: border-box;
     background: rgba(255,255,255,0.95);
     color: #222;
     border-radius: 24px;
-    margin: -50px 12px 24px 0; /* Reduce margin, especially right */
+    
     box-shadow: 0 4px 24px rgba(126,63,242,0.06);
     min-height: 0;
     height: 100vh;
