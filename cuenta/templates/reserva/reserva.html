@@ -9,7 +9,6 @@
 <div class="contenedor-reservas">
     <div class="encabezado-lista">
         <h1>Lista de Reservas</h1>
-        <a href="{% url 'registrar_reserva' %}" class="btn btn-primary btn-registrar">+ Nueva Reserva</a>
     </div>
 
     <table class="tabla-reservas">
@@ -24,41 +23,61 @@
                 <th>Monto Total</th>
                 <th>Estado de Pago</th>
                 <th>Estado del Alquiler</th>
+                <th>Garantía</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for alquiler in alquileres %}
-            <tr>
-                <td>{{ alquiler.usuario }}</td>
-                <td>{{ alquiler.traje }}</td>
-                <td>{{ alquiler.evento }}</td>
-                <td>{{ alquiler.fecha_reserva|date:"d/m/Y" }}</td>
-                <td>{{ alquiler.fecha_inicio|date:"d/m/Y" }}</td>
-                <td>{{ alquiler.fecha_final|date:"d/m/Y" }}</td>
-                <td>{{ alquiler.monto_total }} Bs.</td>
-                <td>
-                    {% with alquiler.pagoalquiler_set.last as pago %}
-                      {% if pago %}
-                          {{ pago.estado }}
-                      {% else %}
-                          Sin pago
-                      {% endif %}
-                    {% endwith %}
-                  </td>
-                <td>{{ alquiler.estado }}</td>
-                <td>
-                    <a href="{% url 'editar_reserva' alquiler.id %}">Editar</a>
-                </td>
-            </tr>
+                {% if alquiler.estado == 'reservado' %}
+                <tr>
+                    <td>{{ alquiler.usuario }}</td>
+                    <td>{{ alquiler.traje }}</td>
+                    <td>{{ alquiler.evento }}</td>
+                    <td>{{ alquiler.fecha_reserva|date:"d/m/Y" }}</td>
+                    <td>{{ alquiler.fecha_inicio|date:"d/m/Y" }}</td>
+                    <td>{{ alquiler.fecha_final|date:"d/m/Y" }}</td>
+                    <td>{{ alquiler.monto_total }} Bs.</td>
+                    <td>
+                        {% with pago=alquiler.pagoalquiler_set.last %}
+                            {% if pago %}
+                                <form method="post" action="{% url 'editar_estado_pago' pago.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm">
+                                        {% for val, label in pago.ESTADO_CHOICES %}
+                                            <option value="{{ val }}" {% if pago.estado == val %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            {% else %}
+                                Sin pago
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'editar_estado_reserva' alquiler.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm">
+                                {% for val, label in alquiler.ESTADO_CHOICES %}
+                                    <option value="{{ val }}" {% if alquiler.estado == val %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+                    <td>
+                        {% with garantia=alquiler.garantia_set.first %}
+                            {{ garantia.estado|default:"-" }}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        <a href="{% url 'informacion_reserva' alquiler.id %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                    </td>
+                </tr>
+                {% endif %}
             {% empty %}
             <tr>
-                <td colspan="9">No hay reservas registradas.</td>
+                <td colspan="11">No hay reservas registradas.</td>
             </tr>
-            
-           
-            
-
             {% endfor %}
         </tbody>
     </table>
