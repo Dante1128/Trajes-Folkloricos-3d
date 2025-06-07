@@ -1,7 +1,7 @@
 from django import views
 from django.contrib import admin
 from django.urls import include, path
-from cuenta.views import CategoriaViewSet, TrajeViewSet, administracionCatalogo, agregarCategoria, catalogoTrajes,  clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_cliente, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva
+from cuenta.views import CategoriaViewSet, TrajeViewSet, administracionCatalogo, agregarCategoria, catalogoTrajes,  clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_alquiler, informacion_cliente, informacion_reserva, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva, alquilar_traje, mis_alquileres, editar_estado_garantia, editar_estado_reserva, editar_estado_pago, informes_reportes
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
@@ -25,12 +25,19 @@ urlpatterns = [
     path('editar_categoria/<int:categoria_id>/',editarCategoria, name='editar_categoria'),
     path('eliminar_categoria/<int:id>/',eliminar_categoria, name='eliminar_categoria'),
     path('registrar_traje/', registrar_traje, name='registrar_traje'),
-    path('editar_traje/<int:id>', editar_traje, name='editar_traje'),
+    path('editar_traje/<int:traje_id>/', editar_traje, name='editar_traje'),
     path('eliminar_traje/<int:id>/', eliminar_traje, name='eliminar_traje'),
     path('reserva/',reserva,name='reserva'),
     path('registrar_reserva/',registrar_reserva,name='registrar_reserva'),
-    path('editar_reserva/<int:reserva_id>/', editar_reserva, name='editar_reserva'),
+    path('editar_reserva/<int:alquiler_id>/', editar_estado_reserva, name='editar_estado_reserva'),
     path('cerrar/', cerrar_sesion, name='cerrar_sesion'),
+    path('alquilar_traje/<int:traje_id>/', alquilar_traje, name='alquilar_traje'),
+    path('mis_alquileres/', mis_alquileres, name='mis_alquileres'),
+    path('editar_estado_garantia/<int:garantia_id>/', editar_estado_garantia, name='editar_estado_garantia'),
+    path('editar_estado_pago/<int:pago_id>/', editar_estado_pago, name='editar_estado_pago'),
+    path('informes_reportes/', informes_reportes, name='informes_reportes'),
+    path('informacion_alquiler/<int:alquiler_id>/', informacion_alquiler, name='informacion_alquiler'),
+    path('informacion_reserva/<int:reserva_id>/', informacion_reserva, name='informacion_reserva'),
 
     # API URLs
      path('api/', include(router.urls)),

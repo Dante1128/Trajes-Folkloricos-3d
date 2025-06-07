@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center text-primary">Editar Traje</h1>
+    <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-lg">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-end">
+            <button type="submit" class="btn btn-success shadow-lg fw-bold">Guardar Cambios</button>
+            <a href="{% url 'administracionCatalogo' %}" class="btn btn-secondary shadow-lg fw-bold">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

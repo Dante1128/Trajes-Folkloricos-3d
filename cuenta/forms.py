@@ -89,3 +89,47 @@ class ReservaCompletaForm(forms.Form):
 
         if monto is not None and monto <= 0:
             raise forms.ValidationError("El monto debe ser mayor a cero.")
+
+class AlquilarTrajeForm(forms.ModelForm):
+    cliente = forms.ModelChoiceField(
+        queryset=Usuario.objects.filter(rol='cliente', estado='activo'),
+        label="Cliente",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    cantidad = forms.IntegerField(min_value=1, initial=1, label="Cantidad", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha_final = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    estado_garantia = forms.ChoiceField(
+        choices=Garantia.ESTADO_CHOICES,
+        label="Estado de Garantía",
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    descripcion_garantia = forms.CharField(
+        label="Descripción de Garantía",
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2})
+    )
+
+    class Meta:
+        model = Alquiler
+        fields = [
+            'cliente', 'evento', 'fecha_inicio', 'fecha_final', 'cantidad',
+            'monto_total', 'metodo_pago', 'estado',
+            'estado_garantia', 'descripcion_garantia'
+        ]
+        widgets = {
+            'evento': forms.TextInput(attrs={'class': 'form-control'}),
+            'monto_total': forms.NumberInput(attrs={'class': 'form-control'}),
+            'metodo_pago': forms.Select(attrs={'class': 'form-control'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_inicio = cleaned_data.get("fecha_inicio")
+        fecha_final = cleaned_data.get("fecha_final")
+        if fecha_inicio and fecha_final and fecha_final < fecha_inicio:
+            raise forms.ValidationError("La fecha final debe ser igual o posterior a la fecha de inicio.")
+        return cleaned_data

@@ -25,8 +25,11 @@
             <p><strong>Talla:</strong> {{ traje.talla }}</p>
             <p><strong>Género:</strong> {{ traje.get_genero_display }}</p>
             <p><strong>Stock:</strong> {{ traje.stock_disponible }}</p>
-
-            <a href="{% url 'reserva' %}" class="reserva-icon" title="Reservar este traje">
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 16px;">
+                <a href="{% url 'registrar_reserva' %}" class="btn btn-primary">Reservar</a>
+                <a href="{% url 'alquilar_traje' traje.id %}" class="btn btn-success">Alquilar</a>
+            </div>
+            <a href="{% url 'reserva' %}" class="reserva-icon" title="Reservar este traje" style="display:none;">
                 <i class="fa-solid fa-calendar-plus"></i>
             </a>
         </div>

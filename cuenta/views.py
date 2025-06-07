@@ -1,3 +1,5 @@
+from datetime import datetime
+from itertools import count
 from django import forms
 from django.db import connection
 from django.http import HttpResponse
@@ -6,7 +8,7 @@ from pyexpat.errors import messages
 from django.forms import ModelForm
 from django.shortcuts import get_object_or_404, render
 from .models import Alquiler, Categoria, Garantia,  PagoAlquiler, Traje, Usuario
-from .forms import  CategoriaForm, ClienteForm, ReservaCompletaForm, TrajeForm
+from .forms import  CategoriaForm, ClienteForm, ReservaCompletaForm, TrajeForm, AlquilarTrajeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
@@ -15,16 +17,21 @@ from .models import Categoria
 from .serializers import CategoriaSerializer, TrajeSerializer
 import firebase_admin
 from firebase_admin import credentials, storage
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.db.models import Count
+
 
 
 '''
 Firebase Storage
 '''
 # Inicializa Firebase solo una vez (por ejemplo, en settings.py o al inicio de la vista)
-cred = credentials.Certificate("d-trajes-folkloricos-firebase-adminsdk-fbsvc-f7abad95d9.json")
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'd-trajes-folkloricos.firebasestorage.app'
-})
+if not firebase_admin._apps:
+    cred = credentials.Certificate("d-trajes-folkloricos-firebase-adminsdk-fbsvc-f7abad95d9.json")
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': 'd-trajes-folkloricos.firebasestorage.app'
+    })
 
 
 
@@ -180,8 +187,21 @@ def registrar_traje(request):
         form = TrajeForm()
     return render(request, 'catalogo/registrar_traje.html', {'form': form})
 
-def editar_traje(request):
-    return render(request, '')
+def editar_traje(request, traje_id):
+    traje = get_object_or_404(Traje, id=traje_id)
+    if request.method == 'POST':
+        form = TrajeForm(request.POST, request.FILES, instance=traje)
+        if form.is_valid():
+            traje = form.save(commit=False)
+            archivo = request.FILES.get('modelo_3d')
+            if archivo:
+                url = subir_a_firebase(archivo, archivo.name)  # Subir archivo a Firebase
+                traje.modelo_3d_url = url
+            traje.save()
+            return redirect('administracionCatalogo')
+    else:
+        form = TrajeForm(instance=traje)
+    return render(request, 'catalogo/editar_traje.html', {'form': form, 'traje': traje})
 
 def  eliminar_traje(request,id):
     trajes = get_object_or_404(Traje, id=id)
@@ -315,6 +335,9 @@ def cerrar_sesion(request):
 
 
 
+
+
+
 '''
 Serializers for the API views
 '''
@@ -330,9 +353,139 @@ class TrajeViewSet(viewsets.ModelViewSet):
     queryset = Traje.objects.all()
     serializer_class = TrajeSerializer
 
+
+
+
+
     def get_queryset(self):
         queryset = super().get_queryset()
         categoria_id = self.request.query_params.get('categoria')
         if categoria_id:
             queryset = queryset.filter(categoria_id=categoria_id)
         return queryset
+
+@login_required
+def alquilar_traje(request, traje_id):
+    traje = get_object_or_404(Traje, id=traje_id)
+
+    if request.method == 'POST':
+        form = AlquilarTrajeForm(request.POST)
+        if form.is_valid():
+            alquiler = form.save(commit=False)
+            alquiler.traje = traje
+            alquiler.usuario = form.cleaned_data['cliente']
+            alquiler.cantidad = form.cleaned_data['cantidad']
+            alquiler.save()
+            # Guardar Garantía asociada
+            Garantia.objects.create(
+                alquiler=alquiler,
+                usuario=form.cleaned_data['cliente'],
+                estado=form.cleaned_data['estado_garantia'],
+                descripcion=form.cleaned_data['descripcion_garantia'],
+            )
+            return redirect('catalogoTrajes')
+    else:
+        form = AlquilarTrajeForm()
+
+    return render(request, 'catalogo/alquilar_traje.html', {
+        'form': form,
+        'traje': traje
+    })
+
+@login_required
+def mis_alquileres(request):
+    alquileres = Alquiler.objects.select_related('usuario', 'traje').filter(estado='alquilado')
+    garantias = {g.alquiler_id: g for g in Garantia.objects.filter(alquiler__in=alquileres)}
+    return render(request, 'catalogo/mis_alquileres.html', {
+        'alquileres': alquileres,
+        'garantias': garantias
+    })
+
+@login_required
+@require_POST
+def editar_estado_garantia(request, garantia_id):
+    garantia = get_object_or_404(Garantia, id=garantia_id)
+    nuevo_estado = request.POST.get('estado')
+    if nuevo_estado in dict(Garantia.ESTADO_CHOICES):
+        garantia.estado = nuevo_estado
+        garantia.save()
+    return redirect('mis_alquileres')
+
+@login_required
+@require_POST
+def editar_estado_reserva(request, alquiler_id):
+    alquiler = get_object_or_404(Alquiler, id=alquiler_id)
+    nuevo_estado = request.POST.get('estado')
+    if nuevo_estado in dict(Alquiler.ESTADO_CHOICES):
+        alquiler.estado = nuevo_estado
+        alquiler.save()
+    return redirect('reserva')
+
+@login_required
+@require_POST
+def editar_estado_pago(request, pago_id):
+    pago = get_object_or_404(PagoAlquiler, id=pago_id)
+    nuevo_estado = request.POST.get('estado')
+    if nuevo_estado in dict(PagoAlquiler.ESTADO_CHOICES):
+        pago.estado = nuevo_estado
+        pago.save()
+    return redirect('reserva')
+
+@login_required
+def informes_reportes(request):
+    # Obtener y convertir fechas del GET
+    fecha_desde_str = request.GET.get('fecha_desde')
+    fecha_hasta_str = request.GET.get('fecha_hasta')
+
+    try:
+        fecha_desde = datetime.strptime(fecha_desde_str, "%Y-%m-%d").date() if fecha_desde_str else datetime.today().date()
+        fecha_hasta = datetime.strptime(fecha_hasta_str, "%Y-%m-%d").date() if fecha_hasta_str else datetime.today().date()
+    except ValueError:
+        fecha_desde = fecha_hasta = datetime.today().date()
+
+    # Asegurar que el rango incluye todo el día de `fecha_hasta`
+    fecha_hasta = datetime.combine(fecha_hasta, datetime.max.time())
+
+    # Filtrar alquileres por fecha de inicio
+    alquileres = Alquiler.objects.filter(fecha_inicio__range=[fecha_desde, fecha_hasta], estado='alquilado')
+    reservas = Alquiler.objects.filter(fecha_inicio__range=[fecha_desde, fecha_hasta], estado='reservado')
+
+    # Calcular la cantidad total de trajes alquilados y reservados
+    total_trajes_alquilados = alquileres.aggregate(total=Count('cantidad'))['total']
+    total_trajes_reservados = reservas.aggregate(total=Count('cantidad'))['total']
+
+    # Convertir montos a formato boliviano
+    for alquiler in alquileres:
+        alquiler.monto_total = f"{alquiler.monto_total:.2f} Bs"
+    for reserva in reservas:
+        reserva.monto_total = f"{reserva.monto_total:.2f} Bs"
+
+    context = {
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'alquileres': alquileres,
+        'reservas': reservas,
+        'total_trajes_alquilados': total_trajes_alquilados or 0,
+        'total_trajes_reservados': total_trajes_reservados or 0,
+    }
+    return render(request, 'informes_reportes.html', context)
+
+def informacion_alquiler(request, alquiler_id):
+    alquiler = get_object_or_404(Alquiler, id=alquiler_id)
+    garantia = Garantia.objects.filter(alquiler=alquiler).first()
+    pago = PagoAlquiler.objects.filter(alquiler=alquiler).first()
+    return render(request, 'catalogo/informacion_alquiler.html', {
+        'alquiler': alquiler,
+        'garantia': garantia,
+        'pago': pago
+    })
+
+def informacion_reserva(request, reserva_id):
+    alquiler = get_object_or_404(Alquiler, id=reserva_id)
+    garantia = Garantia.objects.filter(alquiler=alquiler).first()
+    pago = PagoAlquiler.objects.filter(alquiler=alquiler).first()
+    return render(request, 'reserva/informacion_reserva.html', {
+        'alquiler': alquiler,
+        'garantia': garantia,
+        'pago': pago
+    })

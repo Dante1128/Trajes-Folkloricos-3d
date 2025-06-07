@@ -2,8 +2,6 @@ body{
     background: #fff;
     margin: 0;
     padding: 0;
-    height: 100vh;
-    overflow: hidden;
 }
 .imagefondo
 {
@@ -21,30 +19,25 @@ body{
     padding: 6% 0 0 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    box-sizing: border-box;
-    justify-content: flex-start;
-    overflow: hidden;
+    align-items: center;            
+    height: 100%;
 }
 
-.tituloo {
+.tituloo
+{
     font-family: "Titillium Web", sans-serif;
     font-weight: 700;
     font-style: normal;
     font-size: 2.5vw;
     margin: 18px 335px 10px 0;
     color: rgb(59, 59, 59);
-    text-align: center;
 }
-
 .saludo {
     font-size: 1.5vw;
     margin: 0 60px 40px 0;
     font-family: "Slabo 13px", serif;
     font-weight: 500;
     font-style: normal;
-    text-align: center;
 }
 
 .Cuadrocolor {
@@ -127,52 +120,4 @@ body{
 }
 
 .logo {
-    height: 60px;
-}
-
-/* Responsive para pantallas pequeñas */
-@media (max-width: 900px) {
-    .Cuadrocolor {
-        flex-direction: column;
-        height: auto;
-        min-height: 0;
-        width: 98vw;
-        padding: 6px 0;
-        max-height: 50vh;
-    }
-    .icon-grid {
-        flex-direction: column;
-        gap: 1vh;
-        height: 100%;
-    }
-    .icon-card {
-        font-size: 15px;
-        padding: 12px 8px;
-        min-width: 100px;
-        max-width: 90vw;
-        max-height: 70px;
-    }
-    .tituloo, .saludo {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 2px;
-    }
-    .Cuadrocolor {
-        width: 100vw;
-        padding: 0;
-        max-height: 40vh;
-    }
-    .icon-card {
-        padding: 8px 2px;
-        font-size: 13px;
-        max-height: 60px;
-    }
-    .imagencuadro {
-        width: 28px;
-        height: 32px;
-    }
-}
+    height: 60px;}
