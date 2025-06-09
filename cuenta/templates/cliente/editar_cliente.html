@@ -4,34 +4,43 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'css/editar_cliente.css' %}">
-<h2>Editar Cliente: {{ Usuarios.nombre }}</h2>
-<form method="post">
-    {% csrf_token %}
-    
-    <label for="id_nombre">Nombre:</label>
-    {{ form.nombre.errors }}
-    {{ form.nombre }}<br>
+<img src="{% static 'media/fondoregistro2.png' %}" alt="" class="imagefondo">
+<div class="conteneeditar">
+    <div class="boton">
+        <a href="{% url 'informacion_cliente' cliente.id %}" class="bot">← Volver</a>
+    </div>
+    <div class="contenido">
+        <h2 class="titulo">Editar Cliente: {{ Usuarios.nombre }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="id_nombre">Nombre:</label>
+            {{ form.nombre.errors }}
+            {{ form.nombre }}<br>
 
-    <label for="id_apellido">Apellido:</label>
-    {{ form.apellido.errors }}
-    {{ form.apellido }}<br>
+            <label for="id_apellido">Apellido:</label>
+            {{ form.apellido.errors }}
+            {{ form.apellido }}<br>
 
-    <label for="id_correo">Correo:</label>
-    {{ form.correo.errors }}
-    {{ form.correo }}<br>
+            <label for="id_correo">Correo:</label>
+            {{ form.correo.errors }}
+            {{ form.correo }}<br>
 
-    <label for="id_celular">Celular:</label>
-    {{ form.celular.errors }}
-    {{ form.celular }}<br>
+            <label for="id_celular">Celular:</label>
+            {{ form.celular.errors }}
+            {{ form.celular }}<br>
 
-    <label for="id_direccion " rows=" 3">Dirección:</label>
-    {{ form.direccion.errors }}
-    {{ form.direccion }}<br>
+            <label for="id_direccion" class="dire">Dirección:</label>
+            {{ form.direccion.errors }}
+            {{ form.direccion }}<br>
 
-    <label for="id_estado" >Estado:</label>
-    {{ form.estado.errors }}
-    {{ form.estado }}<br>
-    <button type="submit">Actualizar</button>
-</form>
-<a href="{% url 'informacion_cliente' cliente.id %}">← Volver</a>
+            <label for="id_estado" >Estado:</label>
+            {{ form.estado.errors }}
+            {{ form.estado }}<br>
+            <div class="botonn">
+                <button type="submit">Actualizar</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

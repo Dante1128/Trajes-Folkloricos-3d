@@ -2,24 +2,27 @@
 {% load static %}
 
 {% block content %}
-
-
-<p>{{ cliente.nombre|safe }}</p>
-
 <link rel="stylesheet" href="{% static 'css/informacion_cliente.css' %}">
-<a href="{% url 'clientes' %}" class="volver-lista">← Volver a la lista</a>
-<h2>Información del Cliente</h2>
-<ul>
-    <li><strong>Nombre:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</li>
-    <li><strong>Contacto:</strong> {{ cliente.celular }}</li>
-    <li><strong>Correo:</strong> {{ cliente.correo }}</li>
-    <li><strong>Dirección:</strong> {{ cliente.direccion }}</li>
-    <li><strong>Estado:</strong> {{ cliente.estado }}</li>
-</ul>
+<img src="{% static 'media/fondoextenso9.png' %}" alt="" class="imagefondo">
+<div class="contenedoragre">
+    <div class="seccionboton">
+        <a href="{% url 'clientes' %}" class="volver-lista">← Volver a la lista</a>
+        
+    </div>
+    <div>
+        <h2 class="titulo">Información del Cliente</h2>
+    </div>
+    <ul>
+        <li><strong>Nombre:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</li>
+        <li><strong>Contacto:</strong> {{ cliente.celular }}</li>
+        <li><strong>Correo:</strong> {{ cliente.correo }}</li>
+        <li><strong>Dirección:</strong> {{ cliente.direccion }}</li>
+        <li><strong>Estado:</strong> {{ cliente.estado }}</li>
+    </ul>
 
-<div class="actions">
-    <a href="{% url 'editar_cliente' cliente.id %}" class="editar">Editar</a>
-    <a href="{% url 'eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');" class="eliminar">Eliminar</a>
+    <div class="actions">
+        <a href="{% url 'editar_cliente' cliente.id %}" class="editar"><i class="material-icons" style="font-size:24px;color:rgb(255, 255, 255);">edit</i>Editar</a>
+        <a href="{% url 'eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');" class="eliminar"><i class="material-icons" style="font-size:24px;color:rgb(255, 255, 255);">delete</i>Eliminar</a>
+    </div>
 </div>
-
 {% endblock %}
