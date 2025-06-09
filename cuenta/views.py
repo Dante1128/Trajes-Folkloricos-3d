@@ -2,13 +2,13 @@ from datetime import datetime
 from itertools import count
 from django import forms
 from django.db import connection
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, HttpResponseBadRequest
 from django.utils import timezone
 from pyexpat.errors import messages
 from django.forms import ModelForm
 from django.shortcuts import get_object_or_404, render
-from .models import Alquiler, Categoria, Garantia,  PagoAlquiler, Traje, Usuario
-from .forms import  CategoriaForm, ClienteForm, ReservaCompletaForm, TrajeForm, AlquilarTrajeForm
+from .models import Alquiler, Garantia,  PagoAlquiler, Traje, Usuario
+from .forms import ClienteForm, ReservaCompletaForm, TrajeForm, AlquilarTrajeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
@@ -127,50 +127,30 @@ def eliminar_cliente(request, cliente_id):
     return redirect('clientes')
 
 def catalogoTrajes(request):
-     trajes = Traje.objects.select_related('categoria').all()
-     return render(request, 'catalogo/catalogo.html', {
+    """
+    Vista para mostrar el catálogo de trajes.
+    """
+    trajes = Traje.objects.all()  # Eliminé la referencia a 'categoria'
+    return render(request, 'catalogo/catalogo.html', {
         'trajes': trajes
     })
 
 def inventario(request):
-    trajes = Traje.objects.select_related('categoria').all()
+    """
+    Vista para mostrar el inventario de trajes.
+    """
+    trajes = Traje.objects.all()  # Eliminé la referencia a 'categoria'
     return render(request, 'inventario/inventario.html', {
         'trajes': trajes
     })
 def administracionCatalogo(request):
-    categorias = Categoria.objects.all()  
-    trajes = Traje.objects.all()
+    """
+    Vista para administrar el catálogo de trajes.
+    """
+    trajes = Traje.objects.all()  # Eliminé la consulta de categorías
     return render(request, 'catalogo/administracionCatalogo.html', {
-        'categorias': categorias,
         'trajes': trajes
-        })
-
-def agregarCategoria(request):
-    if request.method == 'POST':
-        form = form = CategoriaForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('administracionCatalogo') 
-    else:
-        form = CategoriaForm()
-    return render(request, 'catalogo/agregar_categoria.html', {'form': form})
-
-def editarCategoria(request, categoria_id):
-    categoria = get_object_or_404(Categoria, pk=categoria_id)
-    if request.method == 'POST':
-        form = CategoriaForm(request.POST, request.FILES, instance=categoria)
-        if form.is_valid():
-            form.save()
-            return redirect('administracionCatalogo')  
-    else:
-        form = CategoriaForm(instance=categoria)
-    return render(request, 'catalogo/editar_categoria.html', {'form': form, 'categoria': categoria})
-
-
-def eliminar_categoria(request, id):
-    categoria = get_object_or_404(Categoria, id=id)  
-    categoria.delete()
-    return redirect('administracionCatalogo') 
+    })
 
 
 def registrar_traje(request):
@@ -483,33 +463,14 @@ class TrajeViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(categoria_id=categoria_id)
         return queryset
 
-@login_required
-def generar_reporte_cifrado(request):
-    if request.method == 'POST':
-        # Generar contenido del reporte
-        contenido_reporte = "Este es el contenido del reporte generado."
-        
-        # Cifrar el contenido
-        clave = Fernet.generate_key()  # Generar clave (puedes guardar esta clave en un lugar seguro)
-        cipher_suite = Fernet(clave)
-        contenido_cifrado = cipher_suite.encrypt(contenido_reporte.encode())
-
-        # Ruta del archivo
-        ruta_carpeta = 'c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports'
-        ruta_archivo = os.path.join(ruta_carpeta, 'reporte_cifrado.txt')
-
-        # Crear la carpeta si no existe
-        os.makedirs(ruta_carpeta, exist_ok=True)
-
-        # Guardar el contenido cifrado en un archivo
-        with open(ruta_archivo, 'wb') as archivo:
-            archivo.write(contenido_cifrado)
-
-        return render(request, 'criptografia/reporte_cifrado.html', {'ruta_archivo': ruta_archivo})
-    return render(request, 'criptografia/generar_reporte.html')
 
 @login_required
-def cifrar_archivo(request):
+def criptografia(request):
+    return render(request, 'criptografia/criptografia.html')
+
+@login_required
+def cifrar_pdf(request):
+ 
     if request.method == 'POST' and 'archivo' in request.FILES:
         archivo = request.FILES['archivo']
         clave = request.POST.get('clave', '').encode('utf-8')
@@ -517,11 +478,77 @@ def cifrar_archivo(request):
         if len(clave) != 16:
             return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
 
+       
         contenido = archivo.read()
         cipher = AES.new(clave, AES.MODE_CBC)
         iv = cipher.iv
         contenido_cifrado = iv + cipher.encrypt(pad(contenido, AES.block_size))
 
+        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_cifrado.txt')
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+        with open(ruta_archivo, 'wb') as archivo_cifrado:
+            archivo_cifrado.write(contenido_cifrado) 
+        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='archivo_cifrado.txt')
+    return render(request, 'criptografia/cifrar_pdf.html')
+
+@login_required
+def descifrar_pdf(request):
+    if request.method == 'POST' and 'archivo' in request.FILES:
+        archivo = request.FILES['archivo']
+        clave = request.POST.get('clave', '').encode('utf-8')
+        if len(clave) != 16:
+            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
+
+        contenido = archivo.read()
+        iv = contenido[:16]
+        contenido_cifrado = contenido[16:]
+        cipher = AES.new(clave, AES.MODE_CBC, iv)
+        try:
+            contenido_descifrado = unpad(cipher.decrypt(contenido_cifrado), AES.block_size)
+        except ValueError:
+            return HttpResponse("La clave o el archivo son incorrectos.", status=400)
+        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_descifrado.pdf')
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+        with open(ruta_archivo, 'wb') as archivo_descifrado:
+            archivo_descifrado.write(contenido_descifrado)
+        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='archivo_descifrado.pdf')
+    return render(request, 'criptografia/descifrar_pdf.html')
+
+@login_required
+def generar_reporte_cifrado(request):
+
+    if request.method == 'POST':
+       
+        contenido_reporte = "Este es el contenido del reporte generado dinámicamente."
+       
+        clave = Fernet.generate_key()  
+        cipher_suite = Fernet(clave)
+        contenido_cifrado = cipher_suite.encrypt(contenido_reporte.encode())
+
+        ruta_carpeta = 'c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports'
+        ruta_archivo = os.path.join(ruta_carpeta, 'reporte_cifrado.txt')
+   
+        os.makedirs(ruta_carpeta, exist_ok=True)
+
+        with open(ruta_archivo, 'wb') as archivo:
+            archivo.write(contenido_cifrado)
+
+        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='reporte_cifrado.txt')
+    return render(request, 'criptografia/generar_reporte.html')
+
+@login_required
+def cifrar_archivo(request):
+
+    if request.method == 'POST' and 'archivo' in request.FILES:
+        archivo = request.FILES['archivo']
+        clave = request.POST.get('clave', '').encode('utf-8')
+
+        if len(clave) != 16:
+            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
+        contenido = archivo.read()
+        cipher = AES.new(clave, AES.MODE_CBC)
+        iv = cipher.iv
+        contenido_cifrado = iv + cipher.encrypt(pad(contenido, AES.block_size))
         ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_cifrado.bin')
         os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
         with open(ruta_archivo, 'wb') as archivo_cifrado:
@@ -532,13 +559,13 @@ def cifrar_archivo(request):
 
 @login_required
 def descifrar_archivo(request):
+   
     if request.method == 'POST' and 'archivo' in request.FILES:
         archivo = request.FILES['archivo']
         clave = request.POST.get('clave', '').encode('utf-8')
 
         if len(clave) != 16:
             return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
-
         contenido = archivo.read()
         iv = contenido[:16]
         contenido_cifrado = contenido[16:]
@@ -547,7 +574,6 @@ def descifrar_archivo(request):
             contenido_descifrado = unpad(cipher.decrypt(contenido_cifrado), AES.block_size)
         except ValueError:
             return HttpResponse("La clave o el archivo son incorrectos.", status=400)
-
         ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_descifrado.txt')
         os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
         with open(ruta_archivo, 'wb') as archivo_descifrado:
@@ -555,55 +581,3 @@ def descifrar_archivo(request):
 
         return HttpResponse("Archivo descifrado correctamente. Descárgalo desde la carpeta 'reports'.")
     return render(request, 'criptografia/descifrar_archivo.html')
-
-@login_required
-def criptografia(request):
-    return render(request, 'criptografia/criptografia.html')
-
-@login_required
-def cifrar_pdf(request):
-    if request.method == 'POST' and 'archivo' in request.FILES:
-        archivo = request.FILES['archivo']
-        clave = request.POST.get('clave', '').encode('utf-8')
-
-        if len(clave) != 16:
-            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
-
-        contenido = archivo.read()
-        cipher = AES.new(clave, AES.MODE_CBC)
-        iv = cipher.iv
-        contenido_cifrado = iv + cipher.encrypt(pad(contenido, AES.block_size))
-
-        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_cifrado.txt')
-        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
-        with open(ruta_archivo, 'wb') as archivo_cifrado:
-            archivo_cifrado.write(contenido_cifrado)
-
-        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='archivo_cifrado.txt')
-    return render(request, 'criptografia/cifrar_pdf.html')
-
-@login_required
-def descifrar_pdf(request):
-    if request.method == 'POST' and 'archivo' in request.FILES:
-        archivo = request.FILES['archivo']
-        clave = request.POST.get('clave', '').encode('utf-8')
-
-        if len(clave) != 16:
-            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
-
-        contenido = archivo.read()
-        iv = contenido[:16]
-        contenido_cifrado = contenido[16:]
-        cipher = AES.new(clave, AES.MODE_CBC, iv)
-        try:
-            contenido_descifrado = unpad(cipher.decrypt(contenido_cifrado), AES.block_size)
-        except ValueError:
-            return HttpResponse("La clave o el archivo son incorrectos.", status=400)
-
-        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_descifrado.pdf')
-        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
-        with open(ruta_archivo, 'wb') as archivo_descifrado:
-            archivo_descifrado.write(contenido_descifrado)
-
-        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='archivo_descifrado.pdf')
-    return render(request, 'criptografia/descifrar_pdf.html')

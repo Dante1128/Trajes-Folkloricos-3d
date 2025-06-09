@@ -1,7 +1,7 @@
 from django.utils import timezone 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from rest_framework import serializers
+
 
 
 
@@ -30,17 +30,6 @@ class Usuario(models.Model):
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
 
-
-class Categoria(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
-    imagen = models.ImageField(upload_to='categoria/', null=True, blank=True)
-
-    def __str__(self):
-        return self.nombre
-    
-
-
 class Traje(models.Model):
     GENERO_CHOICES = [
         ('masculino', 'Masculino'),
@@ -48,7 +37,6 @@ class Traje(models.Model):
     ]
     
     nombre = models.CharField(max_length=100)
-    categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE)
     region = models.CharField(max_length=100)
     descripcion = models.TextField()
     talla = models.CharField(max_length=20)
@@ -172,6 +160,20 @@ class Garantia(models.Model):
 
     def __str__(self):
         return f"Garantía de {self.usuario} - {self.estado}"
+    
+class Categoria(models.Model):
+    """
+    Modelo para representar las categorías de los trajes.
+    """
+    nombre = models.CharField(max_length=100, unique=True)
+    descripcion = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = "Categoría"
+        verbose_name_plural = "Categorías"
 
 
 
