@@ -1,6 +1,5 @@
 from django import forms
 from .models import Alquiler, Garantia, PagoAlquiler, Traje, Usuario
-from .models import Categoria
 
 class ClienteForm(forms.ModelForm):
     class Meta:
@@ -28,24 +27,12 @@ class ClienteForm(forms.ModelForm):
         return usuario
     
 
-class CategoriaForm(forms.ModelForm):
-    class Meta:
-        model = Categoria
-        fields = ['nombre', 'descripcion', 'imagen']
-        widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
-            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-
-        }
-
 class TrajeForm(forms.ModelForm):
     modelo_3d = forms.FileField(required=False, label="Archivo Modelo 3D")
     class Meta:
         model = Traje
         fields = [
             'nombre',
-            'categoria',
             'region',
             'descripcion',
             'talla',
