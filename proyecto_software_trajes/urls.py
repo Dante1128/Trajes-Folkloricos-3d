@@ -1,7 +1,7 @@
 from django import views
 from django.contrib import admin
 from django.urls import include, path
-from cuenta.views import CategoriaViewSet, TrajeViewSet, administracionCatalogo, agregarCategoria, catalogoTrajes,  clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_alquiler, informacion_cliente, informacion_reserva, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva, alquilar_traje, mis_alquileres, editar_estado_garantia, editar_estado_reserva, editar_estado_pago, informes_reportes
+from cuenta.views import CategoriaViewSet, TrajeViewSet, administracionCatalogo, agregarCategoria, catalogoTrajes,  clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, editarCategoria, eliminar_categoria, eliminar_cliente, eliminar_traje, informacion_alquiler, informacion_cliente, informacion_reserva, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva, alquilar_traje, mis_alquileres, editar_estado_garantia, editar_estado_reserva, editar_estado_pago, informes_reportes, generar_reporte_cifrado, cifrar_archivo, descifrar_archivo, criptografia, cifrar_pdf, descifrar_pdf
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
@@ -38,6 +38,12 @@ urlpatterns = [
     path('informes_reportes/', informes_reportes, name='informes_reportes'),
     path('informacion_alquiler/<int:alquiler_id>/', informacion_alquiler, name='informacion_alquiler'),
     path('informacion_reserva/<int:reserva_id>/', informacion_reserva, name='informacion_reserva'),
+    path('generar_reporte_cifrado/', generar_reporte_cifrado, name='generar_reporte_cifrado'),
+    path('cifrar_archivo/', cifrar_archivo, name='cifrar_archivo'),
+    path('descifrar_archivo/', descifrar_archivo, name='descifrar_archivo'),
+    path('criptografia/', criptografia, name='criptografia'),
+    path('cifrar_pdf/', cifrar_pdf, name='cifrar_pdf'),
+    path('descifrar_pdf/', descifrar_pdf, name='descifrar_pdf'),
 
     # API URLs
      path('api/', include(router.urls)),

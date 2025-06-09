@@ -53,11 +53,14 @@
                     <i class="fas fa-cog"></i> Administrar
                 </a>
                 <a href="{% url 'mis_alquileres' %}" class="nav-link">
-                    <i class="fas fa-list"></i> Mis Alquileres
+                    <i class="fas fa-list"></i>  Alquileres
                 </a>
                   <a href="{% url 'informes_reportes' %}" class="nav-link">
                         <i class="fas fa-chart-line"></i> Informes y Reportes
                     </a>
+                <a href="{% url 'criptografia' %}" class="nav-link">
+                    <i class="fas fa-lock"></i> Criptografía
+                </a>
 
                 {% if user.is_authenticated %}
                     <span class="nav-link" style="cursor:default;">

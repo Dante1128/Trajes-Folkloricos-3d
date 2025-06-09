@@ -65,16 +65,11 @@ class ReservaCompletaForm(forms.Form):
     evento = forms.CharField(max_length=100)
     fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     fecha_final = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-   
-
     estado = forms.ChoiceField(choices=Alquiler.ESTADO_CHOICES)
-    # Campos de pago
     monto = forms.DecimalField(max_digits=10, decimal_places=2)
     metodo_pago = forms.ChoiceField(choices=PagoAlquiler.METODO_CHOICES)
     estado_pago = forms.ChoiceField(choices=PagoAlquiler.ESTADO_CHOICES)
     referencia = forms.CharField(max_length=50, required=False)
-    
-    # Campos de garantía
     estado_garantia = forms.ChoiceField(choices=Garantia.ESTADO_CHOICES)
     descripcion_garantia = forms.CharField(widget=forms.Textarea, required=False)
 

@@ -94,6 +94,7 @@ form #id_celular {
 form label[for="id_direccion"] {
     grid-column: 1;
     grid-row: 5;
+ 
 }
 
 form #id_direccion {
