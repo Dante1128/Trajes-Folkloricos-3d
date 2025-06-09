@@ -2,7 +2,7 @@ from datetime import datetime
 from itertools import count
 from django import forms
 from django.db import connection
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.utils import timezone
 from pyexpat.errors import messages
 from django.forms import ModelForm
@@ -20,13 +20,19 @@ from firebase_admin import credentials, storage
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.db.models import Count
+from cryptography.fernet import Fernet
+import os
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from django.http import HttpResponse
+from django.shortcuts import render
+import os
 
 
 
 '''
 Firebase Storage
 '''
-# Inicializa Firebase solo una vez (por ejemplo, en settings.py o al inicio de la vista)
 if not firebase_admin._apps:
     cred = credentials.Certificate("d-trajes-folkloricos-firebase-adminsdk-fbsvc-f7abad95d9.json")
     firebase_admin.initialize_app(cred, {
@@ -44,16 +50,6 @@ def subir_a_firebase(file_obj, nombre_archivo):
     blob.make_public()  
     return blob.public_url
 
-
-
-
-
-
-
-
-
-
-
 def iniciar_sesion(request):
     if request.user.is_authenticated:
         return redirect('inicio')
@@ -67,9 +63,13 @@ def iniciar_sesion(request):
 
 def pagina_inicio(request):
     return render(request, 'cliente/inicio.html')
-
+@login_required  
 def clientes(request):
     mostrar_todos = request.GET.get('mostrar_todos') == 'on'
+
+    if mostrar_todos not in [True, False]:
+        # Si alguien manipula manualmente la URL con valores extraños
+        return HttpResponseBadRequest("Parámetro inválido.")
 
     if mostrar_todos:
         clientes = Usuario.objects.filter(rol='cliente')
@@ -81,6 +81,7 @@ def clientes(request):
         'mostrar_todos': mostrar_todos
     })
 
+@login_required
 def crear_cliente(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
@@ -179,7 +180,7 @@ def registrar_traje(request):
             traje = form.save(commit=False)
             archivo = request.FILES.get('modelo_3d')
             if archivo:
-                url = subir_a_firebase(archivo, archivo.name)  # Tu función personalizada
+                url = subir_a_firebase(archivo, archivo.name)  
                 traje.modelo_3d_url = url
             traje.save()
             return redirect('administracionCatalogo')
@@ -195,7 +196,7 @@ def editar_traje(request, traje_id):
             traje = form.save(commit=False)
             archivo = request.FILES.get('modelo_3d')
             if archivo:
-                url = subir_a_firebase(archivo, archivo.name)  # Subir archivo a Firebase
+                url = subir_a_firebase(archivo, archivo.name)  
                 traje.modelo_3d_url = url
             traje.save()
             return redirect('administracionCatalogo')
@@ -214,7 +215,7 @@ def  eliminar_traje(request,id):
 
 
 def reserva(request):
-    alquileres = Alquiler.objects.all()  # obtienes todos los registros
+    alquileres = Alquiler.objects.all() 
     return render(request, 'reserva/reserva.html', {'alquileres': alquileres})
 
 def registrar_reserva(request):
@@ -222,26 +223,24 @@ def registrar_reserva(request):
         form = ReservaCompletaForm(request.POST)
         
         if form.is_valid():
-            print("Formulario válido")  # <-- Aquí para confirmar que el form pasó
+            print("Formulario válido")  
             
             try:
-                # Guardar Alquiler
+         
                 alquiler = Alquiler.objects.create(
                     usuario=form.cleaned_data['usuario'],
                     traje=form.cleaned_data['traje'],
-                    evento=form.cleaned_data['evento'],  # Solo texto aquí
+                    evento=form.cleaned_data['evento'],  
                     fecha_reserva=timezone.now(),
                     fecha_inicio=form.cleaned_data['fecha_inicio'],
                     fecha_final=form.cleaned_data['fecha_final'],
                     monto_total=form.cleaned_data['monto'],
-                    estado=form.cleaned_data['estado'],  # Asegúrate que 'estado' está en tu modelo
+                    estado=form.cleaned_data['estado'], 
                     metodo_pago=form.cleaned_data['metodo_pago'],
                 )
             except Exception as e:
                 print("Error al crear alquiler:", e)
-                # Opcional: puedes devolver un mensaje de error o redirigir a otra página aquí
-
-            # Guardar Pago
+    
             PagoAlquiler.objects.create(
                 alquiler=alquiler,
                 monto=form.cleaned_data['monto'],
@@ -252,7 +251,7 @@ def registrar_reserva(request):
                 referencia=form.cleaned_data['referencia'],
             )
             
-            # Guardar Garantia
+       
             Garantia.objects.create(
                 alquiler=alquiler,
                 usuario=form.cleaned_data['usuario'],
@@ -260,10 +259,10 @@ def registrar_reserva(request):
                 descripcion=form.cleaned_data['descripcion_garantia'],
             )
             
-            return redirect('reserva')  # <--- Aquí va la redirección al final del proceso exitoso
+            return redirect('reserva')  
 
         else:
-            print("Errores en el formulario:", form.errors)  # <-- Aquí para ver errores si el form no es válido
+            print("Errores en el formulario:", form.errors)  
     else:
         form = ReservaCompletaForm()
         
@@ -335,35 +334,6 @@ def cerrar_sesion(request):
 
 
 
-
-
-
-'''
-Serializers for the API views
-'''
-
-class CategoriaViewSet(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-
-    def get_serializer_context(self):
-        return {'request': self.request}
-    
-class TrajeViewSet(viewsets.ModelViewSet):
-    queryset = Traje.objects.all()
-    serializer_class = TrajeSerializer
-
-
-
-
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        categoria_id = self.request.query_params.get('categoria')
-        if categoria_id:
-            queryset = queryset.filter(categoria_id=categoria_id)
-        return queryset
-
 @login_required
 def alquilar_traje(request, traje_id):
     traje = get_object_or_404(Traje, id=traje_id)
@@ -376,7 +346,7 @@ def alquilar_traje(request, traje_id):
             alquiler.usuario = form.cleaned_data['cliente']
             alquiler.cantidad = form.cleaned_data['cantidad']
             alquiler.save()
-            # Guardar Garantía asociada
+
             Garantia.objects.create(
                 alquiler=alquiler,
                 usuario=form.cleaned_data['cliente'],
@@ -433,7 +403,7 @@ def editar_estado_pago(request, pago_id):
 
 @login_required
 def informes_reportes(request):
-    # Obtener y convertir fechas del GET
+    
     fecha_desde_str = request.GET.get('fecha_desde')
     fecha_hasta_str = request.GET.get('fecha_hasta')
 
@@ -443,18 +413,17 @@ def informes_reportes(request):
     except ValueError:
         fecha_desde = fecha_hasta = datetime.today().date()
 
-    # Asegurar que el rango incluye todo el día de `fecha_hasta`
+   
     fecha_hasta = datetime.combine(fecha_hasta, datetime.max.time())
 
-    # Filtrar alquileres por fecha de inicio
+   
     alquileres = Alquiler.objects.filter(fecha_inicio__range=[fecha_desde, fecha_hasta], estado='alquilado')
     reservas = Alquiler.objects.filter(fecha_inicio__range=[fecha_desde, fecha_hasta], estado='reservado')
 
-    # Calcular la cantidad total de trajes alquilados y reservados
+    
     total_trajes_alquilados = alquileres.aggregate(total=Count('cantidad'))['total']
     total_trajes_reservados = reservas.aggregate(total=Count('cantidad'))['total']
 
-    # Convertir montos a formato boliviano
     for alquiler in alquileres:
         alquiler.monto_total = f"{alquiler.monto_total:.2f} Bs"
     for reserva in reservas:
@@ -489,3 +458,152 @@ def informacion_reserva(request, reserva_id):
         'garantia': garantia,
         'pago': pago
     })
+
+
+
+'''
+Serializers for the API views
+'''
+
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+    
+class TrajeViewSet(viewsets.ModelViewSet):
+    queryset = Traje.objects.all()
+    serializer_class = TrajeSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        categoria_id = self.request.query_params.get('categoria')
+        if categoria_id:
+            queryset = queryset.filter(categoria_id=categoria_id)
+        return queryset
+
+@login_required
+def generar_reporte_cifrado(request):
+    if request.method == 'POST':
+        # Generar contenido del reporte
+        contenido_reporte = "Este es el contenido del reporte generado."
+        
+        # Cifrar el contenido
+        clave = Fernet.generate_key()  # Generar clave (puedes guardar esta clave en un lugar seguro)
+        cipher_suite = Fernet(clave)
+        contenido_cifrado = cipher_suite.encrypt(contenido_reporte.encode())
+
+        # Ruta del archivo
+        ruta_carpeta = 'c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports'
+        ruta_archivo = os.path.join(ruta_carpeta, 'reporte_cifrado.txt')
+
+        # Crear la carpeta si no existe
+        os.makedirs(ruta_carpeta, exist_ok=True)
+
+        # Guardar el contenido cifrado en un archivo
+        with open(ruta_archivo, 'wb') as archivo:
+            archivo.write(contenido_cifrado)
+
+        return render(request, 'criptografia/reporte_cifrado.html', {'ruta_archivo': ruta_archivo})
+    return render(request, 'criptografia/generar_reporte.html')
+
+@login_required
+def cifrar_archivo(request):
+    if request.method == 'POST' and 'archivo' in request.FILES:
+        archivo = request.FILES['archivo']
+        clave = request.POST.get('clave', '').encode('utf-8')
+
+        if len(clave) != 16:
+            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
+
+        contenido = archivo.read()
+        cipher = AES.new(clave, AES.MODE_CBC)
+        iv = cipher.iv
+        contenido_cifrado = iv + cipher.encrypt(pad(contenido, AES.block_size))
+
+        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_cifrado.bin')
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+        with open(ruta_archivo, 'wb') as archivo_cifrado:
+            archivo_cifrado.write(contenido_cifrado)
+
+        return HttpResponse("Archivo cifrado correctamente. Descárgalo desde la carpeta 'reports'.")
+    return render(request, 'criptografia/cifrar_archivo.html')
+
+@login_required
+def descifrar_archivo(request):
+    if request.method == 'POST' and 'archivo' in request.FILES:
+        archivo = request.FILES['archivo']
+        clave = request.POST.get('clave', '').encode('utf-8')
+
+        if len(clave) != 16:
+            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
+
+        contenido = archivo.read()
+        iv = contenido[:16]
+        contenido_cifrado = contenido[16:]
+        cipher = AES.new(clave, AES.MODE_CBC, iv)
+        try:
+            contenido_descifrado = unpad(cipher.decrypt(contenido_cifrado), AES.block_size)
+        except ValueError:
+            return HttpResponse("La clave o el archivo son incorrectos.", status=400)
+
+        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_descifrado.txt')
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+        with open(ruta_archivo, 'wb') as archivo_descifrado:
+            archivo_descifrado.write(contenido_descifrado)
+
+        return HttpResponse("Archivo descifrado correctamente. Descárgalo desde la carpeta 'reports'.")
+    return render(request, 'criptografia/descifrar_archivo.html')
+
+@login_required
+def criptografia(request):
+    return render(request, 'criptografia/criptografia.html')
+
+@login_required
+def cifrar_pdf(request):
+    if request.method == 'POST' and 'archivo' in request.FILES:
+        archivo = request.FILES['archivo']
+        clave = request.POST.get('clave', '').encode('utf-8')
+
+        if len(clave) != 16:
+            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
+
+        contenido = archivo.read()
+        cipher = AES.new(clave, AES.MODE_CBC)
+        iv = cipher.iv
+        contenido_cifrado = iv + cipher.encrypt(pad(contenido, AES.block_size))
+
+        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_cifrado.txt')
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+        with open(ruta_archivo, 'wb') as archivo_cifrado:
+            archivo_cifrado.write(contenido_cifrado)
+
+        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='archivo_cifrado.txt')
+    return render(request, 'criptografia/cifrar_pdf.html')
+
+@login_required
+def descifrar_pdf(request):
+    if request.method == 'POST' and 'archivo' in request.FILES:
+        archivo = request.FILES['archivo']
+        clave = request.POST.get('clave', '').encode('utf-8')
+
+        if len(clave) != 16:
+            return HttpResponse("La clave debe tener exactamente 16 caracteres.", status=400)
+
+        contenido = archivo.read()
+        iv = contenido[:16]
+        contenido_cifrado = contenido[16:]
+        cipher = AES.new(clave, AES.MODE_CBC, iv)
+        try:
+            contenido_descifrado = unpad(cipher.decrypt(contenido_cifrado), AES.block_size)
+        except ValueError:
+            return HttpResponse("La clave o el archivo son incorrectos.", status=400)
+
+        ruta_archivo = os.path.join('c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\cuenta\\static\\reports', 'archivo_descifrado.pdf')
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+        with open(ruta_archivo, 'wb') as archivo_descifrado:
+            archivo_descifrado.write(contenido_descifrado)
+
+        return FileResponse(open(ruta_archivo, 'rb'), as_attachment=True, filename='archivo_descifrado.pdf')
+    return render(request, 'criptografia/descifrar_pdf.html')
