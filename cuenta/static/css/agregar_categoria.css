@@ -1,0 +1,217 @@
+/* Fondo general y contenedor */
+body, .Contenecata {
+    background: linear-gradient(135deg, #f3e7ff 0%, #e3f0ff 100%);
+    min-height: 100vh;
+}
+
+/* Centrado del contenedor principal */
+.Contenecata {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+/* Título arriba y separado */
+.titulo-categorias {
+    margin-bottom: 30px;
+}
+
+.titulo-categorias h2 {
+    color: #7e3ff2;
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+/* Contenido debajo del título */
+.contenido-categorias {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+/* Títulos y textos */
+.text-purple {
+    color: #000000 !important;
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.Contenecata a {
+    font-family: "Glegoo", serif;
+    font-weight: 500;
+    font-style: normal;
+    text-decoration: none;
+    color: #7e3ff2;
+    transition: color 0.2s;
+}
+
+.Contenecata a:hover {
+    color: #4b1fa6;
+    text-decoration: underline;
+}
+
+.Contenecata p {
+    font-family: "Slabo 13px", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #444;
+}
+
+.text-orange {
+    color: #ff6b35;
+}
+
+/* Tarjetas */
+.card {
+    border-radius: 18px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 2px 12px rgba(126,63,242,0.08), 0 1.5px 8px rgba(40,167,69,0.06);
+    transition: box-shadow 0.3s, transform 0.3s;
+    background: #fff;
+}
+
+.card:hover {
+    box-shadow: 0 8px 32px rgba(126,63,242,0.15), 0 1.5px 8px rgba(40,167,69,0.08);
+    transform: translateY(-6px) scale(1.03);
+}
+
+.card-img-top {
+    border-radius: 18px 18px 0 0;
+    height: 220px;
+    object-fit: cover;
+    background: #f8f9fa;
+}
+
+/* Botones */
+.btn-primary,
+.btn-success,
+.btn-outline-primary.text-purple,
+.btn-outline-danger {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(126,63,242,0.12);
+    transition: background 0.2s, box-shadow 0.2s;
+    color: #fff !important;
+    padding: 12px 28px;
+    font-size: 1.05rem;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    box-shadow: 0 4px 16px rgba(126,63,242,0.18);
+    filter: brightness(1.08);
+}
+
+.btn-outline-primary.text-purple {
+    color: #7e3ff2 !important;
+    border-color: #7e3ff2 !important;
+    border-radius: 8px;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+.btn-outline-primary.text-purple:hover {
+    background: #7e3ff2 !important;
+    color: #fff !important;
+}
+
+.btn-outline-danger {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-outline-danger:hover {
+    background: #dc3545 !important;
+    color: #fff !important;
+}
+
+/* Botones centrados */
+.botones-centrados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* Badge de stock */
+.badge-stock {
+    background: #28a745;
+    color: #fff;
+    font-size: 0.9em;
+    padding: 0.4em 0.7em;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-weight: 600;
+}
+
+/* Títulos y textos de tarjetas */
+.card-title {
+    font-weight: 700;
+    font-size: 1.35rem;
+}
+
+.card-text {
+    font-size: 1.05rem;
+}
+
+/* Iconos */
+.icon-btn {
+    font-size: 1.1em;
+    margin-right: 6px;
+}
+
+/* Contenedor personalizado para categorías en grid */
+.categorias-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-bottom: 0;
+    justify-items: center;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 1200px) {
+    .categorias-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (max-width: 992px) {
+    .categorias-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 576px) {
+    .categorias-row {
+        grid-template-columns: 1fr;
+    }
+    .card-img-top {
+        height: 150px;
+    }
+}
+
+/* Estado vacío */
+.empty-state {
+    color: #7e3ff2;
+    background: #f8f6ff;
+    border-radius: 12px;
+    padding: 32px 0;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(126,63,242,0.08);
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
