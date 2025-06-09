@@ -6,8 +6,11 @@
 <link rel="stylesheet" href="{% static 'css/clientes.css' %}">
 <img src="{% static 'media/fondoextenso8.png' %}" alt="" class="imagefondo">
 <div class="contenedorcliente">
-    
     <div class="seccionboton">
+            <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+    </div>
+    <div class="seccionboton">
+        
         <h1 class="titulocliente">Clientes</h1>
         <div class="botoncliente">
             <a href="{% url 'crear_cliente' %}">

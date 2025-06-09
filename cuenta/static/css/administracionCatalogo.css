@@ -1,46 +1,133 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+}
+.imagefondo
+{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    z-index: 0;
+}
+.seccionboton
+{
+    display: flex;
+    align-items: center;
+}
+.titulo
+{
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 2.6vw;
+    margin: 0% 0% 2% 2%;
+    color: rgb(0, 0, 0);
+}
+.subtitulo
+{
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 2.3vw;
+    margin: 0% 0% 2% 0;
+    color: rgb(59, 59, 59);
+}
 /* Fondo general y contenedor */
-body, .Contenecata {
-    background: linear-gradient(135deg, #f3e7ff 0%, #e3f0ff 100%);
-    min-height: 100vh;
+.Contenecata {
+    
+    position: relative;
+    z-index: 1;
+    padding: 3% 5% 3% 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;            
+    height: 100%;
 }
 
 /* Títulos y textos */
-.text-purple {
-    color: #7e3ff2 !important;
-    font-family: "Ubuntu Condensed", sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
+
 .Contenecata a {
-    font-family: "Glegoo", serif;
-    font-weight: 500;
-    font-style: normal;
+    display: inline-block;
+    margin: 0 0 20px 0;
+    background-color: #1b1e2f;
+    color: #FFFFFF;
     text-decoration: none;
-    color: #7e3ff2;
-    transition: color 0.2s;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid #1b1e2f;
+    white-space: nowrap;
+    font-family: "Glegoo", serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 .Contenecata a:hover {
-    color: #4b1fa6;
-    text-decoration: underline;
+    background-color: #60748b;
+    color: #FFFFFF;
+    border-color: #60748b;
+}
+.botones a
+{
+    display: inline-block;
+    margin: 0 0 20px 0;
+    background-color: #1b1e2f;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid #1b1e2f;
+    white-space: nowrap;
+    font-family: "Glegoo", serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.botones a:hover
+{
+    background-color: #60748b;
+    color: #FFFFFF;
+    border-color: #60748b;
+
 }
 .Contenecata p {
     font-family: "Slabo 13px", serif;
     font-weight: 400;
     font-style: normal;
-    color: #444;
+    color: #000000;
+    font-size: 1.2rem;
 }
-.text-orange {
-    color: #ff6b35;
+
+.categoria
+{
+    margin: 0% 0% 2% 2%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Tarjetas */
 .card {
+    display: flex;
+
     border-radius: 18px;
     overflow: hidden;
     border: none;
     box-shadow: 0 2px 12px rgba(126,63,242,0.08), 0 1.5px 8px rgba(40,167,69,0.06);
     transition: box-shadow 0.3s, transform 0.3s;
-    background: #fff;
+    background: #9dadbf;
+    flex-direction: column;
+    padding:25px;
+    width: 107%;
 }
 .card:hover {
     box-shadow: 0 8px 32px rgba(126,63,242,0.15), 0 1.5px 8px rgba(40,167,69,0.08);
@@ -52,7 +139,21 @@ body, .Contenecata {
     object-fit: cover;
     background: #f8f9fa;
 }
-
+.cajita
+{
+    display: flex;
+    flex-direction: column;
+}
+.botoncajita
+{
+    display: flex;
+    justify-content: space-between;
+}
+.trajes
+{
+    
+    margin: 0% 0% 2% 0%;
+}
 /* Botones */
 .btn-primary, .btn-success {
     font-weight: 600;
@@ -66,13 +167,12 @@ body, .Contenecata {
     filter: brightness(1.08);
 }
 .btn-outline-primary.text-purple {
-    color: #7e3ff2 !important;
-    border-color: #7e3ff2 !important;
+    
     border-radius: 8px;
     font-weight: 500;
 }
 .btn-outline-primary.text-purple:hover {
-    background: #7e3ff2 !important;
+    
     color: #fff !important;
 }
 .btn-outline-danger {
@@ -97,8 +197,10 @@ body, .Contenecata {
 
 /* Títulos y textos de tarjetas */
 .card-title {
-    font-weight: 700;
-    font-size: 1.35rem;
+    font-size: 2rem;
+    font-family: 'Ubuntu Condensed';
+    font-weight: 800;
+    margin: 11px 0px 10px 0%;
 }
 .card-text {
     font-size: 1.05rem;

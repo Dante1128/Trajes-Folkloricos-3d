@@ -6,51 +6,60 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/administracionCatalogo.css' %}">
 </head>
+<img src="{% static 'media/fondoinicio.png' %}" alt="" class="imagefondo">
 <div class="Contenecata">
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-purple">Administrar Catálogo</h1>
+        <div class="tituloo">
+            <div class="seccionboton">
+                <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+                <h1 class="titulo">Administrar trajes</h1>
+            </div>
         </div>
-
-        <div class="text-center mt-4">
-            <a href="{% url 'registrar_traje' %}" class="btn btn-success" style="background-color: #28a745; border-color: #28a745;">
-                <i class="fas fa-plus-circle"></i> Registrar nuevo traje
-            </a>
-        </div>
-        <div class="row mt-5">
-            {% for traje in trajes %}
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    {% if traje.imagen %}
-                    <img src="{{ traje.imagen.url }}" class="card-img-top" alt="{{ traje.nombre }}">
-                    {% else %}
-                    <img src="{% static 'img/default_traje.jpg' %}" class="card-img-top" alt="{{ traje.nombre }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="card-title text-purple">{{ traje.nombre }}</h3>
-                            <div>
-                                <a href="{% url 'editar_traje' traje.id %}" class="btn btn-outline-primary text-purple border-0">
-                                    <i class="fas fa-edit">editar</i>
-                                </a>
-                                <a href="{% url 'eliminar_traje' traje.id %}" class="btn btn-outline-danger border-0">
-                                    <i class="fas fa-trash">eliminar</i>
-                                </a>
+        
+        
+        <div class="trajes">
+            <h1 class="subtitulo">Trajes</h1>
+       
+            <div class="text-center mt-4">
+                <a href="{% url 'registrar_traje' %}" class="botones" >
+                    <i class="fas fa-plus-circle"></i> Registrar nuevo traje
+                </a>
+            </div>
+            <div class="row mt-5">
+                {% for traje in trajes %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        {% if traje.imagen %}
+                        <img src="{{ traje.imagen.url }}" class="card-img-top" alt="{{ traje.nombre }}">
+                        {% else %}
+                        <img src="{% static 'img/default_traje.jpg' %}" class="card-img-top" alt="{{ traje.nombre }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="cajita">
+                                <h3 class="card-title">{{ traje.nombre }}</h3>
+                                <div class="botoncajita">
+                                    <a href="{% url 'editar_traje' traje.id %}" class="btn btn-outline-primary text-purple border-0">
+                                        <i class="fas fa-edit">editar</i>
+                                    </a>
+                                    <a href="{% url 'eliminar_traje' traje.id %}" class="btn btn-outline-danger border-0">
+                                        <i class="fas fa-trash">eliminar</i>
+                                    </a>
+                                </div>
                             </div>
+                            
+                            <p class="card-text"><strong>Talla:</strong> {{ traje.talla }}</p>
+                            <p class="card-text"><strong>Color:</strong> {{ traje.color_principal }}</p>
+                            
+                            <p class="card-text"><strong>Stock:</strong> {{ traje.stock_disponible }}</p>
                         </div>
-                        <p class="card-text"><strong>Región:</strong> {{ traje.region }}</p>
-                        <p class="card-text"><strong>Talla:</strong> {{ traje.talla }}</p>
-                        <p class="card-text"><strong>Color:</strong> {{ traje.color_principal }}</p>
-                        <p class="card-text"><strong>Material:</strong> {{ traje.material }}</p>
-                        <p class="card-text"><strong>Stock:</strong> {{ traje.stock_disponible }}</p>
                     </div>
                 </div>
+                {% empty %}
+                <div class="col-12 text-center my-5">
+                    <p>No hay trajes registrados aún.</p>
+                </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <div class="col-12 text-center my-5">
-                <p>No hay trajes registrados aún.</p>
-            </div>
-            {% endfor %}
         </div>
     </div>
 </div>
