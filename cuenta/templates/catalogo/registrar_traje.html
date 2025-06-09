@@ -5,71 +5,79 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/formularioRegistroTraje.css' %}">
 </head>
-<div class="container mt-4">
-    <h1 class="text-purple text-center mb-4">Registrar Nuevo Traje</h1>
-
-    <form method="POST" enctype="multipart/form-data" class="form-traje">
-        {% csrf_token %}
-
-        <div class="form-group">
-            <label for="id_nombre">Nombre del Traje</label>
-            {{ form.nombre }}
+<img src="{% static 'media/fondoregistro4.png' %}" alt="" class="imagefondo">
+<div class="contenedor">
+        <div class="seccionboton">
+            <a href="{% url 'administracionCatalogo' %}" class="volver-lista">← Volver</a>
+            <h1 class="titulo">Registrar nuevo traje</h1>
         </div>
+    <div class="contenedortra">
+        
+            
 
-        <div class="form-group">
-            <label for="id_categoria">Categoría</label>
-            {{ form.categoria }}
-        </div>
+        <form method="POST" enctype="multipart/form-data" class="form-traje">
+            {% csrf_token %}
 
-        <div class="form-group">
-            <label for="id_region">Región</label>
-            {{ form.region }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_descripcion">Descripción</label>
-            {{ form.descripcion }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_talla">Talla</label>
-            {{ form.talla }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_genero">Género</label>
-            {{ form.genero }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_color_principal">Color Principal</label>
-            {{ form.color_principal }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_material">Material</label>
-            {{ form.material }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_stock_disponible">Stock Disponible</label>
-            {{ form.stock_disponible }}
-        </div>
-
-        <div class="form-group">
-            <label for="id_imagen">Imagen del Traje</label>
-            {{ form.imagen }}
-        </div>
-
-        <div class="form-group">
-                <label for="id_modelo_3d">Archivo Modelo 3D</label>
-                {{ form.modelo_3d }}
+            <div class="form-group">
+                <label for="id_nombre">Nombre del Traje</label>
+                {{ form.nombre }}
             </div>
 
+            <div class="form-group">
+                <label for="id_categoria">Categoría</label>
+                {{ form.categoria }}
+            </div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-submit">Registrar Traje</button>
-        </div>
-    </form>
+            <div class="form-group">
+                <label for="id_region">Región</label>
+                {{ form.region }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_descripcion">Descripción</label>
+                {{ form.descripcion }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_talla">Talla</label>
+                {{ form.talla }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_genero">Género</label>
+                {{ form.genero }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_color_principal">Color Principal</label>
+                {{ form.color_principal }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_material">Material</label>
+                {{ form.material }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_stock_disponible">Stock Disponible</label>
+                {{ form.stock_disponible }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_imagen">Imagen del Traje</label>
+                {{ form.imagen }}
+            </div>
+
+            <div class="form-group">
+                    <label for="id_modelo_3d">Archivo Modelo 3D</label>
+                    {{ form.modelo_3d }}
+                </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-submit">Registrar Traje</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

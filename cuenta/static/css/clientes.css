@@ -103,6 +103,33 @@ body
 {
     padding-right: 20%;
 }
+.seccionboton
+{
+    width: 80%;
+}
+a.volver-lista {
+    display: inline-block;
+    margin: 0 0 20px 0;
+    background-color: #1b1e2f;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid #1b1e2f;
+    white-space: nowrap;
+    font-family: "Glegoo", serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Mantener color en hover (opcional) */
+a.volver-lista:hover {
+    background-color: #60748b;
+    color: #FFFFFF;
+    border-color: #60748b;
+}
 .contenedor-principal {
     width: 100vw;
     height: 100vh;
