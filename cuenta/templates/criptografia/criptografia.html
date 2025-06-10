@@ -2,11 +2,21 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4 text-center text-primary">Criptografía</h1>
-    <div class="text-center">
-        <a href="{% url 'cifrar_pdf' %}" class="btn btn-success shadow-lg fw-bold">Cifrar PDF</a>
-        <a href="{% url 'descifrar_pdf' %}" class="btn btn-warning shadow-lg fw-bold">Descifrar PDF</a>
+<head>
+    <link rel="stylesheet" href="{% static 'css/criptografia.css' %}">
+</head>
+<img src="{% static 'media/fondoextenso44.png' %}" alt="" class="imagefondo">
+
+<div class="contenedorcrip">
+    <div class="botones">
+        <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+        <h1 class="titulo">Criptografía</h1>
+      
+    </div>
+    
+    <div class="seccionboton">
+        <a href="{% url 'cifrar_pdf' %}" class="botoneess">Cifrar PDF</a>
+        <a href="{% url 'descifrar_pdf' %}" class="botoneess">Descifrar PDF</a>
     </div>
 </div>
 {% endblock %}

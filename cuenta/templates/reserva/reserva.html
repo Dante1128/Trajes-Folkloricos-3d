@@ -6,9 +6,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="contenedor-reservas">
-    <div class="encabezado-lista">
-        <h1>Lista de Reservas</h1>
+<img src="{% static 'media/fondoextenso9.png' %}" alt="" class="imagefondo">
+<div class="contenedoreservas">
+    <div class="seccionboton">
+        <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+        <h1 class="titulo">Lista de Reservas</h1>
     </div>
 
     <table class="tabla-reservas">

@@ -18,9 +18,15 @@ body{
     object-fit: cover;
     z-index: 0;
 }
-.seccionboton
+.contenedoralqui
 {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    height: 100%;
+    margin: 5%;
     display: flex;
+    flex-direction: column;
     align-items: center;
 }
 .titulo
@@ -32,16 +38,16 @@ body{
     margin: 0% 0% 2% 2%;
     color: rgb(0, 0, 0);
 }
-.contenedoreservas
+.botones
 {
-    position: relative;
-    z-index: 1;
-    width: 90%;
-    height: 100%;
-    margin: 5%;
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
-a.volver-lista {
+.botones a
+{
     display: inline-block;
+    margin: 0 0 20px 0;
     background-color: #1b1e2f;
     color: #FFFFFF;
     text-decoration: none;
@@ -55,26 +61,12 @@ a.volver-lista {
     font-size: 1.1rem;
     transition: background-color 0.3s, border-color 0.3s;
 }
-
-        /* Mantener color en hover (opcional) */
-a.volver-lista:hover {
+.botones a:hover
+{
     background-color: #60748b;
     color: #FFFFFF;
     border-color: #60748b;
-}
-.btn-registrar {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    background-color: #1b1e2f; /* verde */
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-.btn-registrar:hover {
-    background-color: #60748b;
+
 }
 table {
     border-collapse: collapse;
@@ -112,9 +104,41 @@ tbody td {
 tbody tr:last-child {
     border-bottom: none;
 }
-.empty-message {
-    text-align: center;
-    font-style: italic;
-    color: #999;
-    padding: 20px;
+a.volver-lista {
+    display: inline-block;
+    background-color: #1b1e2f;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid #1b1e2f;
+    white-space: nowrap;
+    font-family: "Glegoo", serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+        /* Mantener color en hover (opcional) */
+a.volver-lista:hover {
+    background-color: #60748b;
+    color: #FFFFFF;
+    border-color: #60748b;
+}
+.mensajes
+{
+    font-size: 20px;
+    font-family: "Glegoo", serif;
+    font-weight: 500;
+    color: #1a1a1a;
+
+}
+form
+{
+    font-size: 20px;
+    font-family: "Glegoo", serif;
+    font-weight: 500;
+    color: #1a1a1a;
+
 }

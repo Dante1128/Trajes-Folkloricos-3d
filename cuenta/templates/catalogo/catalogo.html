@@ -9,9 +9,14 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
-<h1 style="text-align: center; margin-bottom: 20px;">Catálogo de Trajes</h1>
 
-<div class="card-container">
+<img src="{% static 'media/fondoextenso8.png' %}" alt="" class="imagefondo">
+<div class="contenedorcata">
+    <div class="seccionboton">
+        <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+        <h1 class="titulo">Catálogo de Trajes</h1>
+    </div>
+    
     {% for traje in trajes %}
         <div class="card">
             {% if traje.categoria.imagen %}
@@ -29,7 +34,7 @@
                 <a href="{% url 'registrar_reserva' %}" class="btn btn-primary">Reservar</a>
                 <a href="{% url 'alquilar_traje' traje.id %}" class="btn btn-success">Alquilar</a>
             </div>
-            <a href="{% url 'reserva' %}" class="reserva-icon" title="Reservar este traje" style="display:none;">
+            <a href="{% url 'reserva' %}" class="reserva-icon" title="Reservar este traje" >
                 <i class="fa-solid fa-calendar-plus"></i>
             </a>
         </div>
