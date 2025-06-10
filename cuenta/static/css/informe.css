@@ -1,37 +1,146 @@
-/* General container styling */
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body
+{
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+}
+.imagefondo
+{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    z-index: 0;
+}
+.seccionboton
+{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+a.volver-lista {
+    display: inline-block;
+    margin: 0 0 20px 0;
+    background-color: #1b1e2f;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 2px solid #1b1e2f;
+    white-space: nowrap;
+    font-family: "Glegoo", serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.volver-lista
+{
+    display: inline-block;
+    margin: 13px 0 0px 0;
+    background-color: #1b1e2f;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 25px;
+    
+    border-radius: 6px;
+    border: 2px solid #1b1e2f;
+    white-space: nowrap;
+    font-family: "Glegoo", serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.volver-lista:hover
+{
+    background-color: #60748b;
+    color: #FFFFFF;
+    border-color: #60748b;
+}
+/* Mantener color en hover (opcional) */
+a.volver-lista:hover {
+    background-color: #60748b;
+    color: #FFFFFF;
+    border-color: #60748b;
+}
+.titulo
+{
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 2.5vw;
+    margin: 0% 20% 1% 17px;
+    color: rgb(59, 59, 59);
+}
+.conteneinfor
+{
+    width: 97%;
+    position: relative;
+    z-index: 1;
+    padding: 4% 0 0 4%;
+    display: flex;
+    flex-direction: column;
+          
+    height: 100%;
+}
+.letraa
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.cuadro
+{
+    width: 47%;
+    margin-left: 4%;
 }
 
 /* Title styling */
-h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #007bff;
-    text-align: center;
-    margin-bottom: 30px;
-}
+
 
 /* Form styling */
 form {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 25px;
+    background-color:#bdc5ce;
+    border-radius: 20px;
+    padding: 18px;
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    border: 2px solid #007bff;
+    border: 2px solid #e1e1e1;
+    margin: 15px;
 }
 
 form .form-label {
     font-weight: bold;
-    color: #007bff;
+    color: #000000;
+    font-family: "Slabo 13px", serif;
+    font-weight: 550;
+    font-size: 1.2rem;
+    padding: 20px;
+}
+form .form-input
+{
+    height: 10%;
 }
 
 form .form-control {
-    border: 2px solid #007bff;
+    border: 2px solid #a3a3a3;
     border-radius: 5px;
+    height: 10%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 170px;
+    font-size: 20px;
+    color: #1c1c1c;
 }
 
 form .btn-primary {
@@ -62,8 +171,8 @@ form .btn-danger {
 }
 
 .card-text {
-    font-size: 1rem;
-    color: #6c757d;
+    font-size: 1.5rem;
+    color: #3a3b3b;
 }
 
 /* Table styling */
@@ -94,24 +203,29 @@ form .btn-danger {
 
 /* Text colors for sections */
 .text-success {
-    color: #28a745 !important;
+    color: #1b1e2f !important;
+    font-family: "Titillium Web", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 25px 0px;
+
 }
 
 .text-info {
-    color: #17a2b8 !important;
+    color: #1b1e2f !important;
+    font-family: "Titillium Web", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 25px 0px;
 }
 
 .text-muted {
-    color: #6c757d !important;
+    font-size: 1.5rem;
+    color: #3a3b3b;
 }
 
 /* Button styling */
-button {
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 5px;
-}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
