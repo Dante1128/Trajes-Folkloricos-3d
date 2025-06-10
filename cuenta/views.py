@@ -2,19 +2,18 @@ from datetime import datetime
 from itertools import count
 from django import forms
 from django.db import connection
-from django.http import HttpResponse, FileResponse, HttpResponseBadRequest
+from django.http import HttpResponse, FileResponse, HttpResponseBadRequest, JsonResponse
 from django.utils import timezone
 from pyexpat.errors import messages
 from django.forms import ModelForm
 from django.shortcuts import get_object_or_404, render
-from .models import Alquiler, Garantia,  PagoAlquiler, Traje, Usuario
+from .models import Alquiler, Garantia, PagoAlquiler, Traje, Usuario
 from .forms import ClienteForm, ReservaCompletaForm, TrajeForm, AlquilarTrajeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
-from .models import Categoria
-from .serializers import CategoriaSerializer, TrajeSerializer
+from .serializers import TrajeSerializer, UsuarioSerializer
 import firebase_admin
 from firebase_admin import credentials, storage
 from django.contrib.auth.decorators import login_required
@@ -27,24 +26,29 @@ from Crypto.Util.Padding import pad, unpad
 from django.http import HttpResponse
 from django.shortcuts import render
 import os
+from firebase_admin import auth  # Importar Firebase Admin SDK para verificar tokens
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
 '''
 Firebase Storage
 '''
+
 if not firebase_admin._apps:
-    cred = credentials.Certificate("d-trajes-folkloricos-firebase-adminsdk-fbsvc-f7abad95d9.json")
-    firebase_admin.initialize_app(cred, {
-        'storageBucket': 'd-trajes-folkloricos.firebasestorage.app'
-    })
+    auth_cred = credentials.Certificate("c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\trajes-folkloricos-firebase-adminsdk-fbsvc-d1de3d505e.json")
+    firebase_admin.initialize_app(auth_cred)
 
 
-
-
+storage_cred = credentials.Certificate("c:\\Users\\dante\\Desktop\\proyecto_software_trajes\\d-trajes-folkloricos-firebase-adminsdk-fbsvc-f7abad95d9.json")
+storage_app = firebase_admin.initialize_app(storage_cred, {
+    'storageBucket': 'd-trajes-folkloricos.firebasestorage.app' 
+}, name='storage_app')
 
 def subir_a_firebase(file_obj, nombre_archivo):
-    bucket = storage.bucket()
+   
+    bucket = storage.bucket(app=storage_app)
     blob = bucket.blob(f'modelos_3d/{nombre_archivo}')
     blob.upload_from_file(file_obj)
     blob.make_public()  
@@ -312,8 +316,6 @@ def cerrar_sesion(request):
     logout(request)
     return redirect('login')
 
-
-
 @login_required
 def alquilar_traje(request, traje_id):
     traje = get_object_or_404(Traje, id=traje_id)
@@ -445,13 +447,6 @@ def informacion_reserva(request, reserva_id):
 Serializers for the API views
 '''
 
-class CategoriaViewSet(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-
-    def get_serializer_context(self):
-        return {'request': self.request}
-    
 class TrajeViewSet(viewsets.ModelViewSet):
     queryset = Traje.objects.all()
     serializer_class = TrajeSerializer
@@ -581,3 +576,140 @@ def descifrar_archivo(request):
 
         return HttpResponse("Archivo descifrado correctamente. Descárgalo desde la carpeta 'reports'.")
     return render(request, 'criptografia/descifrar_archivo.html')
+
+@csrf_exempt
+def registrar_cliente_flutter(request):
+    print(f"🔥 Método recibido: {request.method}")  # Depuración
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            firebase_token = data.get('firebase_token')
+            print(f"🔥 Token recibido: {firebase_token}")  # Depuración
+
+      
+            decoded_token = auth.verify_id_token(firebase_token)
+            print(f"🔥 Token decodificado: {decoded_token}") 
+
+            uid = decoded_token['uid']
+            print(f"🔥 UID decodificado: {uid}")  
+
+            # Agregar UID al cuerpo de los datos
+            data['uid'] = uid
+
+            # Validar y guardar los datos del cliente usando el serializer
+            serializer = UsuarioSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save(rol='cliente', estado='activo')  # Forzar valores predeterminados
+                return JsonResponse({'message': 'Cliente registrado exitosamente.'}, status=201)
+            else:
+                print(f"🔥 Errores del serializer: {serializer.errors}")  # Depuración
+                return JsonResponse(serializer.errors, status=400)
+
+        except auth.InvalidIdTokenError as e:
+            print(f"🔥 Token de Firebase inválido: {str(e)}")  # Depuración
+            return JsonResponse({'message': 'Token de Firebase inválido.'}, status=400)
+        except Exception as e:
+            print(f"🔥 Error: {str(e)}")  # Depuración
+            return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
+
+    return JsonResponse({'message': 'Método no permitido.'}, status=405)
+
+@csrf_exempt
+def registrar_reserva_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            
+            # Validar datos requeridos
+            usuario_id = data.get('usuario_id')
+            traje_id = data.get('traje_id')
+            evento = data.get('evento', 'Sin evento')  # Valor predeterminado
+            fecha_inicio = data.get('fecha_inicio')
+            fecha_final = data.get('fecha_final')
+            monto = data.get('monto', 0.0)  # Valor predeterminado
+            metodo_pago = data.get('metodo_pago', 'Pendiente')  # Valor predeterminado
+            estado_pago = data.get('estado_pago', 'Pendiente')  # Valor predeterminado
+            referencia = data.get('referencia', '')  # Valor predeterminado
+            estado_garantia = data.get('estado_garantia', 'no_devuelto')  # Valor predeterminado
+            descripcion_garantia = data.get('descripcion_garantia', '')  # Valor predeterminado
+            cantidad = data.get('cantidad', 1)  # Valor predeterminado
+            talla = data.get('talla', 'M')  # Valor predeterminado
+
+            # Validar campos obligatorios
+            if not all([usuario_id, traje_id, fecha_inicio, fecha_final]):
+                return JsonResponse({'message': 'Faltan datos requeridos.'}, status=400)
+
+            # Obtener usuario y traje
+            usuario = get_object_or_404(Usuario, id=usuario_id)
+            traje = get_object_or_404(Traje, id=traje_id)
+
+            # Crear la reserva
+            alquiler = Alquiler.objects.create(
+                usuario=usuario,
+                traje=traje,
+                evento=evento,
+                fecha_reserva=timezone.now(),
+                fecha_inicio=fecha_inicio,
+                fecha_final=fecha_final,
+                monto_total=monto,
+                estado='reservado',
+                metodo_pago=metodo_pago,
+                cantidad=cantidad,
+                talla=talla,
+            )
+
+            # Crear el pago
+            PagoAlquiler.objects.create(
+                alquiler=alquiler,
+                monto=monto,
+                fecha_pago=timezone.now(),
+                metodo_pago=metodo_pago,
+                estado=estado_pago,
+                referencia=referencia,
+            )
+
+            # Crear la garantía
+            Garantia.objects.create(
+                alquiler=alquiler,
+                usuario=usuario,
+                estado=estado_garantia,
+                descripcion=descripcion_garantia,
+            )
+
+            return JsonResponse({'message': 'Reserva registrada exitosamente.'}, status=201)
+
+        except Exception as e:
+            print(f"🔥 Error al registrar reserva: {str(e)}")
+            return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
+
+    return JsonResponse({'message': 'Método no permitido.'}, status=405)
+
+@csrf_exempt
+def detalles_reserva(request, reserva_id):
+    try:
+        # Obtener la reserva
+        alquiler = get_object_or_404(Alquiler, id=reserva_id)
+        garantia = Garantia.objects.filter(alquiler=alquiler).first()
+        pago = PagoAlquiler.objects.filter(alquiler=alquiler).first()
+
+        # Construir la respuesta JSON
+        detalles = {
+            'evento': alquiler.evento,
+            'fecha_inicio': alquiler.fecha_inicio.strftime('%Y-%m-%d'),
+            'fecha_final': alquiler.fecha_final.strftime('%Y-%m-%d'),
+            'cantidad_trajes': alquiler.cantidad,
+            'talla': alquiler.talla,
+            'monto_total': f"{alquiler.monto_total:.2f} Bs",
+            'estado': alquiler.estado,
+            'metodo_pago': alquiler.metodo_pago,
+            'referencia': pago.referencia if pago else None,
+            'estado_pago': pago.estado if pago else None,
+            'estado_garantia': garantia.estado if garantia else None,
+            'descripcion_garantia': garantia.descripcion if garantia else None,
+        }
+
+        return JsonResponse(detalles, status=200)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

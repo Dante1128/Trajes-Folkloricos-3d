@@ -2,10 +2,6 @@ from django.utils import timezone
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-
-
-
-
 class Usuario(models.Model):
     ROL_CHOICES = [
         ('admin', 'Administrador'),
@@ -20,12 +16,13 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     correo = models.EmailField(unique=True)
-    celular = models.CharField(max_length=20)
+    celular = models.CharField(max_length=20, blank=True)  # Permitir valores en blanco
     direccion = models.TextField()
     contrasenia = models.CharField(max_length=128)  # Recomendable usar password hashing
     rol = models.CharField(max_length=10, choices=ROL_CHOICES)
     fecha_registro = models.DateTimeField(default=timezone.now)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='activo')
+    uid = models.CharField(max_length=100, unique=True)  # Eliminar null=True y blank=True
     
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
@@ -71,17 +68,18 @@ class Alquiler(models.Model):
     
     usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, related_name='alquileres')
     traje = models.ForeignKey('Traje', on_delete=models.CASCADE, related_name='alquileres')
-    evento = models.CharField(max_length=255, null=True, blank=True)
+    evento = models.CharField(max_length=255, null=True, blank=True)  
+    talla = models.CharField(max_length=20, null=True, blank=True)  
 
     
     fecha_reserva = models.DateTimeField(default=timezone.now)
     fecha_inicio = models.DateField()
     fecha_final = models.DateField()
-    cantidad = models.PositiveIntegerField(default=1)  # <-- Nuevo campo
-    monto_total = models.DecimalField(max_digits=10, decimal_places=2)
-    metodo_pago = models.CharField(max_length=15, choices=METODO_PAGO_CHOICES)
+    cantidad = models.PositiveIntegerField(default=1) 
+    monto_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)  # Valor predeterminado
+    metodo_pago = models.CharField(max_length=15, choices=METODO_PAGO_CHOICES, default='efectivo')  # Valor predeterminado
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='reservado')
-    # Nuevo campo
+
     
     def __str__(self):
         return f"Alquiler #{self.id} - {self.usuario.nombre} - {self.traje.nombre}"
@@ -156,24 +154,10 @@ class Garantia(models.Model):
     alquiler = models.ForeignKey('Alquiler', on_delete=models.CASCADE)
     usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
     estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default='no_devuelto')
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)  # Hacer opcional
 
     def __str__(self):
         return f"Garantía de {self.usuario} - {self.estado}"
-    
-class Categoria(models.Model):
-    """
-    Modelo para representar las categorías de los trajes.
-    """
-    nombre = models.CharField(max_length=100, unique=True)
-    descripcion = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = "Categoría"
-        verbose_name_plural = "Categorías"
 
 
 

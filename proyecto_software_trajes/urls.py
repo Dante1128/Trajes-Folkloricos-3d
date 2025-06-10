@@ -1,13 +1,14 @@
 from django import views
 from django.contrib import admin
 from django.urls import include, path
-from cuenta.views import TrajeViewSet, administracionCatalogo, catalogoTrajes,  clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, eliminar_cliente, eliminar_traje, informacion_alquiler, informacion_cliente, informacion_reserva, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva, alquilar_traje, mis_alquileres, editar_estado_garantia, editar_estado_reserva, editar_estado_pago, informes_reportes, generar_reporte_cifrado, cifrar_archivo, descifrar_archivo, criptografia, cifrar_pdf, descifrar_pdf
+from cuenta.views import TrajeViewSet, administracionCatalogo, catalogoTrajes,  clientes, crear_cliente, editar_cliente, editar_reserva, editar_traje, eliminar_cliente, eliminar_traje, informacion_alquiler, informacion_cliente, informacion_reserva, iniciar_sesion, cerrar_sesion, inventario, pagina_inicio, registrar_reserva, registrar_traje, reserva, alquilar_traje, mis_alquileres, editar_estado_garantia, editar_estado_reserva, editar_estado_pago, informes_reportes, generar_reporte_cifrado, cifrar_archivo, descifrar_archivo, criptografia, cifrar_pdf, descifrar_pdf, registrar_cliente_flutter, registrar_reserva_flutter, detalles_reserva
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'trajes', TrajeViewSet, basename='traje')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,6 +42,9 @@ urlpatterns = [
     path('generar_reporte_cifrado/', generar_reporte_cifrado, name='generar_reporte_cifrado'),
     path('cifrar_archivo/', cifrar_archivo, name='cifrar_archivo'),
     path('descifrar_archivo/', descifrar_archivo, name='descifrar_archivo'),
+    path('api/registrar_cliente_flutter/', registrar_cliente_flutter, name='registrar_cliente_flutter'),
+    path('api/registrar_reserva_flutter/', registrar_reserva_flutter, name='registrar_reserva_flutter'),
+    path('api/detalles_reserva/<int:reserva_id>/', detalles_reserva, name='detalles_reserva'),
 
     # API URLs
      path('api/', include(router.urls)),

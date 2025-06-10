@@ -24,13 +24,12 @@ SECRET_KEY = 'django-insecure-#+gp+lal+y4-ua_sq)+nzr#3vz379q&#a6yx1)ool&0irb8tm_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-#DEBUG = False
 DEBUG = True
 
 
 #ALLOWED_HOSTS = ['3.17.208.88','localhost']
 
-ALLOWED_HOSTS = ['172.172.10.107','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['172.172.2.12', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,9 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cuenta',
     'rest_framework',
+     'corsheaders',
 ]
 
 MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -107,6 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.0.7:8000"
+]
 
 
 # Internationalization
@@ -136,3 +140,4 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_ALL_ORIGINS = True
