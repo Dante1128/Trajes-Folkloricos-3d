@@ -2,12 +2,18 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Alquileres Activos</h2>
+<head>
+    <link rel="stylesheet" href="{% static 'css/alquileres.css' %}">
+</head>
+<img src="{% static 'media/fondoextenso33.png' %}" alt="" class="imagefondo">
+<div class="contenedoralqui">
+    <div class="botones">
+        <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+        <h1 class="titulo">Alquileres Activos</h1>
       
     </div>
     {% if alquileres %}
+    <div class="tablita">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -68,14 +74,17 @@
                         {% endwith %}
                     </td>
                     <td>
-                        <a href="{% url 'informacion_alquiler' alquiler.id %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                        <a href="{% url 'informacion_alquiler' alquiler.id %}" class="volver-lista">Ver Detalle</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
     {% else %}
+    <div class="mensajes">
         <p>No hay alquileres activos registrados.</p>
+    </div>
     {% endif %}
 </div>
 {% endblock %}

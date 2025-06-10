@@ -2,21 +2,33 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4 text-center text-primary">Descifrar PDF</h1>
-    <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-lg">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="archivo" class="form-label">Selecciona un archivo PDF cifrado:</label>
-            <input type="file" id="archivo" name="archivo" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="clave" class="form-label">Clave de descifrado (16 caracteres):</label>
-            <input type="text" id="clave" name="clave" class="form-control" maxlength="16" required>
-        </div>
-        <div class="text-end">
-            <button type="submit" class="btn btn-warning shadow-lg fw-bold">Descifrar</button>
-        </div>
-    </form>
+<head>
+    
+    <link rel="stylesheet" href="{% static 'css/cifrar.css' %}">
+</head>
+<img src="{% static 'media/fondoextenso66.png' %}" alt="" class="imagefondo">
+
+<div class="contenedorcif">
+    <div class="botones">
+        <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+        <h1 class="titulo">Descifrar Archivo</h1>
+      
+    </div>
+    <div class="cajita">
+        <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-lg">
+            {% csrf_token %}
+            <div class="otro2">
+                <label for="archivo" class="form-label">Selecciona un archivo PDF cifrado:</label>
+                <input type="file" id="archivo" name="archivo" class="form-control" required>
+            </div>
+            <div class="otro1">
+                <label for="clave" class="form-label">Clave de descifrado (16 caracteres):</label>
+                <input type="text" id="clave" name="clave" class="form-control" maxlength="18" required>
+            </div>
+            <div class="seccionboton">
+                <button type="submit" class="botonees">Descifrar</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -2,8 +2,19 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4 text-center text-primary">Cifrar Archivo</h1>
+<head>
+    
+    <link rel="stylesheet" href="{% static 'css/cifrar.css' %}">
+</head>
+<img src="{% static 'media/fondoextenso44.png' %}" alt="" class="imagefondo">
+
+<div class="contenedorcif">
+    <div class="botones">
+        <a href="{% url 'inicio' %}" class="volver-lista">← Volver</a>
+        <h1 class="titulo">Cifrar Archivo</h1>
+      
+    </div>
+    
     <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-lg">
         {% csrf_token %}
         <div class="mb-3">
